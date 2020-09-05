@@ -1,59 +1,44 @@
 import utils from "node_modules/decentraland-ecs-utils/index";
-import { ActionsSequenceSystem } from "node_modules/decentraland-ecs-utils/actionsSequenceSystem/actionsSequenceSystem";
+import { Switchboard } from "./switchboard"
 
-export class MovableEntity extends Entity implements ActionsSequenceSystem.IAction {
+export class MovableEntity extends Entity {
   hasFinished: boolean = false;
   constructor(
     model: GLTFShape,
-    transform: TranformConstructorArgs,
+    //transform: TranformConstructorArgs,
     sound: AudioClip,
-    deltaPosition: Vector3,
     public velocity: Vector3,
+    switchboard: Switchboard
   ) {
     super();
     engine.addEntity(this);
+    this.setParent(switchboard)
+    const transform = new Transform(switchboard.getComponent(Transform))
 
     this.addComponent(model);
-    this.addComponent(new Transform(transform));
+    this.addComponent(transform);
     this.addComponent(new AudioSource(sound));
+    transform.position = new Vector3(0,0,0);
 
-    const startPos = transform.position;
-    const endPos = transform.position.add(deltaPosition);
+    const gravity = new Vector3(0, -0.05, 0);
 
     this.addComponent(
-      new utils.ToggleComponent(utils.ToggleState.Off, (value): void => {
-        if (value == utils.ToggleState.On) {
+      new utils.Interval(50, (): void => {
+        let newPos = this.getComponent(Transform).position.add(velocity)
+        velocity = velocity.add(gravity)
           this.addComponentOrReplace(
             new utils.MoveTransformComponent(
               this.getComponent(Transform).position,
-              endPos,
-              0.5
+              newPos,
+              0.1
             )
-          );
-        } else {
-          this.addComponentOrReplace(
-            new utils.MoveTransformComponent(
-              this.getComponent(Transform).position,
-              startPos,
-              0.5
-            )
-          );
-        }
-
-        this.getComponent(AudioSource).playOnce();
+          )
+          if (this.getComponent(Transform).position.y + switchboard.getComponent(Transform).position.y < 0)
+          {
+            this.removeComponent(utils.Interval);
+            engine.removeEntity(this);
+          }
       })
     );
-  }
-  update() {
-      const position = this.getComponent(Transform).position
-      const vel = this.velocity
-      position.x += vel.x
-      position.y += vel.y
-      position.z += vel.z
-  }
-  onStart(): void {
-  }
-  //Method to run at the end
-  onFinish(): void {
   }
 }

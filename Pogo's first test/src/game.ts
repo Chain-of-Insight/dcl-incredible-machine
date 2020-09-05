@@ -3,7 +3,8 @@ import { createInventory } from '../node_modules/decentraland-builder-scripts/in
 import Script1 from "../6464f5ed-d97d-49fc-9c99-4f9e2069dc71/src/item"
 import Script2 from "../4bf77c44-42db-4134-90f0-06da4202ff04/src/item"
 import {MovableEntity} from 'src/MovableEntity'
-import utils from "node_modules/decentraland-ecs-utils/index";
+import { Switchboard } from "./switchboard"
+import { Button } from "./button";
 
 /*
 // Define the system
@@ -273,21 +274,35 @@ gltfShape4.isPointerBlocker = true
 gltfShape4.visible = true
 soccerBall.addComponentOrReplace(gltfShape4)
 
-const fern1 = new MovableEntity(
-  new GLTFShape("models/PlaygroundBall_01/PlaygroundBall_01.glb"),
-  { position: new Vector3(23.2489, 5.5071, 23.813) },
-  new AudioClip("sounds/coinPickup.mp3"),
-  new Vector3(0, 0, -0.5),
-  new Vector3(0,0,0)
-);
 
-fern1.addComponent(
+
+
+/////////////// TEST CODE GOES BELOW
+
+const switchboard = new Switchboard(
+  new GLTFShape('models/switchboard.glb'),
+  new Vector3(8, 5, 8), 
+  new Vector3(27, 1, 8), 
+  new Vector3(8, 0, 8), 
+  new Vector3(8, 0, 8)
+  )
+
+const button = new Button(new GLTFShape("models/buttonB.glb"), 
+  { position: new Vector3(8, 1.5, 20),
+  scale: new Vector3(0.3, 0.3, 0.3) }
+);
+button.addComponent(
   new OnClick((): void => {
-    fern1.getComponent(utils.ToggleComponent).toggle();
+    const ball1 = new MovableEntity(
+      new GLTFShape("models/PlaygroundBall_01/PlaygroundBall_01.glb"),
+      new AudioClip("sounds/coinPickup.mp3"),
+      new Vector3(0.5,1,0.5),
+      switchboard
+    );
   })
 );
 
-
+/////////////////////////////////////////
 
 const channelId = Math.random().toString(16).slice(2)
 const channelBus = new MessageBus()
