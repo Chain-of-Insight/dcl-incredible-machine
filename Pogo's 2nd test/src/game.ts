@@ -113,23 +113,11 @@ const ball2 = new MovableEntity(
 button.addComponent(
   new OnPointerDown(
     (e) => {
-
     makeBall(0, ang2[lever12.state()]);
     
     if (lever11.state() == solSwitchboard[0] && lever12.state() == solLever[0]){
       makeBall(1, ang2[lever22.state()]);
-      /*
-      new utils.Interval(100, (): void => {
-        if (ball1.hasFinished || !ball1.hasFinished){
-          const ball2 = new MovableEntity(
-            new GLTFShape("models/soccerBall.glb"),
-            new AudioClip("sounds/coinPickup.mp3"),
-            ang2[lever22.state()],  // r, theta, phi, phi controls height
-            switchboard2
-          );
-        }
-      });
-      */
+
     }
   },
   { 
@@ -143,11 +131,9 @@ function makeBall(type, state) {
   switch (type) {
     case 0:
       ball1.create(state);
-      log('ball1', ball1);
       break;
     case 1:
       ball2.create(state);
-      log('ball2', ball2);
       break;
   }
 }

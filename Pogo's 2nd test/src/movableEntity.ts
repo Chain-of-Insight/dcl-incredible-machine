@@ -43,10 +43,7 @@ export class MovableEntity extends Entity {
     this.resetVelocity = this.sphericalVelocity;
     this.transform.position = new Vector3(0,0,0);
     this.addComponentOrReplace(this.transform);
- 
-    //log('x', this.transform.position.x);
-    //log('y', this.transform.position.y);
-    //log('z', this.transform.position.z);
+
  
     let velocity = this.SphericalToCartesian(this.sphericalVelocity);
     let gravity = new Vector3(0, -0.05, 0);
@@ -83,10 +80,9 @@ export class MovableEntity extends Entity {
  
   private handleFlight(velocity: Vector3, gravity: Vector3) {
     let pY: number;
-    //log('isFinished triggered');
-    this.addComponentOrReplace(
+    this.addComponent(
       new utils.Interval(10, (): void => {
-        this.addComponentOrReplace(
+        this.addComponent(
           new utils.MoveTransformComponent(
             this.transform.position,
             this.transform.position.add(velocity),
@@ -102,11 +98,10 @@ export class MovableEntity extends Entity {
           velocity = new Vector3(velocity.x*0.6, -velocity.y*0.5, velocity.z*0.6)
           if (Math.abs(velocity.y) < 0.05 && gravity.y != 0){
             velocity.y = 0
-            //gravity = new Vector3(-velocity.x/2, 0, -velocity.z/2) // hack to change from gravity to friction
+            gravity = new Vector3(-velocity.x/2, 0, -velocity.z/2) // hack to change from gravity to friction
           }
         }
         if (velocity.x < 0.001 && velocity.y < 0.001 && velocity.z < 0.001) {
-          //log('isFinished triggered');
           velocity = null
           gravity = null
           this.getComponent(Transform).position = null
