@@ -1,20 +1,91 @@
-import { MovableEntity } from './MovableEntity'
+import { MovableEntity } from './movableEntity'
 import { Switchboard } from "./switchboard"
 import { Button } from "./button"
+import { Lever } from "./lever"
+import utils from "../node_modules/decentraland-ecs-utils/index";
+
+let solSwitchboard: Array<number> = [ 1, 1, 0, 1, 0, 0 ] 
+let solLever: Array<number> = [ 1, 1, 0, 1, 0, 0 ]
 
 
+// FIRST ITEMSET //////////////////////////////////////////
 
-const switchboard = new Switchboard(
+// First switchboard
+const switchboard1 = new Switchboard(
   new GLTFShape('models/switchboard.glb'),
-  new Vector3(8, 5, 8), 
-  new Vector3(27, 1, 8), 
-  new Vector3(8, 0, 8), 
-  new Vector3(8, 0, 8)
+  new Vector3(8, 1, 8), 
+  new Vector3(27, 5, 8)
   )
 
+// First lever, switchboard control
+const lever11 = new Lever(new GLTFShape('4bf77c44-42db-4134-90f0-06da4202ff04/models/Lever_Console.glb'),
+  { position: new Vector3(33,0,20) }
+);
+lever11.addComponent(
+  new OnClick((): void => {
+    switchboard1.toggle()
+    lever11.toggle()
+  })
+);
+
+// First lever, angle control
+let ang1: Array<Vector3> = [ new Vector3(1, 30, 45), new Vector3(1, 90, 30) ]
+const lever12 = new Lever(new GLTFShape('4bf77c44-42db-4134-90f0-06da4202ff04/models/Lever_Console.glb'),
+  { position: new Vector3(32,0,20) }
+);
+lever12.addComponent(
+  new OnClick((): void => {
+    lever12.toggle()
+  })
+);
+////////////////////////////////////////////////////
+
+
+
+
+
+// SECOND ITEMSET //////////////////////////////////////////
+
+// 2nd switchboard
+const switchboard2 = new Switchboard(
+  new GLTFShape('models/switchboard.glb'),
+  new Vector3(27, 6, 33), 
+  new Vector3(15, 9, 33)
+  )
+
+// 2nd lever, switchboard control
+const lever21 = new Lever(new GLTFShape('4bf77c44-42db-4134-90f0-06da4202ff04/models/Lever_Console.glb'),
+  { position: new Vector3(33,0,25) }
+);
+lever21.addComponent(
+  new OnClick((): void => {
+    switchboard2.toggle()
+    lever21.toggle()
+  })
+);
+
+// 2nd lever, angle control
+let ang2: Array<Vector3> = [ new Vector3(0.5, 30, 40), new Vector3(1, 30, 35) ]
+const lever22 = new Lever(new GLTFShape('4bf77c44-42db-4134-90f0-06da4202ff04/models/Lever_Console.glb'),
+  { position: new Vector3(32,0,25) }
+);
+lever22.addComponent(
+  new OnClick((): void => {
+    lever22.toggle()
+  })
+);
+////////////////////////////////////////////////////
+
+
+
+
+
+
+let levers: Array<Lever> = [ lever11, lever12, lever21, lever22 ]
+
 const button = new Button(new GLTFShape("models/buttonB.glb"), 
-  { position: new Vector3(8, 1.5, 30),
-  scale: new Vector3(0.3, 0.3, 0.3) }
+  { position: new Vector3(30, 1.5, 20),
+   scale: new Vector3(0.3, 0.3, 0.3) }
 );
 
 button.addComponent(
@@ -22,11 +93,33 @@ button.addComponent(
     const ball1 = new MovableEntity(
       new GLTFShape("models/soccerBall.glb"),
       new AudioClip("sounds/coinPickup.mp3"),
-      new Vector3(0.5, 1.5, 1.5),
-      switchboard
+      ang1[lever12.state()],  // r, theta, phi, phi controls height
+      switchboard1
     );
+    if (lever11.state() == solSwitchboard[0] && lever12.state() == solLever[0]){
+      const ball2 = new MovableEntity(
+        new GLTFShape("models/soccerBall.glb"),
+        new AudioClip("sounds/coinPickup.mp3"),
+        ang2[lever22.state()],  // r, theta, phi, phi controls height
+        switchboard2
+      );
+      /*
+      new utils.Interval(100, (): void => {
+        if (ball1.hasFinished || !ball1.hasFinished){
+          const ball2 = new MovableEntity(
+            new GLTFShape("models/soccerBall.glb"),
+            new AudioClip("sounds/coinPickup.mp3"),
+            ang2[lever22.state()],  // r, theta, phi, phi controls height
+            switchboard2
+          );
+        }
+      });
+      */
+    }
   })
 );
+
+
 
 
 

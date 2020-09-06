@@ -24,93 +24,49 @@ platformLockingSound.getComponent(Transform).position = Camera.instance.position
 engine.addEntity(platformLockingSound)
 
 export class Switchboard extends Entity {
+  public stateVar = false
+  public gears = new Entity()
   constructor(
     model: GLTFShape,
-    startPosition: Vector3, 
-    endPosition: Vector3, 
-    btn1Position: Vector3, 
-    btn2Position: Vector3
+    public startPosition: Vector3, 
+    public endPosition: Vector3, 
   ) {
     super()
     engine.addEntity(this)
-    
-    // Gears
-    const gears = new Entity()
-    gears.setParent(this)
-    gears.addComponent(new GLTFShape('models/gears.glb'))
-    gears.addComponent(new Transform())
-
-    // Buttons
-    const btn1 = new Entity()
-    engine.addEntity(btn1)
-    btn1.addComponent(new GLTFShape('models/buttonA.glb'))
-    btn1.addComponent(new Transform({
-      position: btn1Position
-    }))
-
-    const btn2 = new Entity()
-    engine.addEntity(btn2)
-    btn2.addComponent(new GLTFShape('models/buttonB.glb'))
-    btn2.addComponent(new Transform({
-      position: btn2Position
-    }))
 
     // Switchboard
     this.addComponent(model)
     this.addComponent(new Transform({ position: startPosition }))
     
-    // Child elements
-    //btn1.setParent(this)
-    btn1.addComponent(
-      new utils.TriggerComponent(
-        new TriggerBoxShape(
-          new Vector3(2,2,2), 
-          new Vector3(1.5,2,0)
-        ),
-        null, null, null, null, 
-        // On camera enter:
-        () => {
-          let btn1Position = -0.12
-          let btn2Position = 0
-          this.moveTransform(btn1Position, btn2Position, -180, endPosition, gears, btn1, btn2)
-        }
-      )
-    )
-
-    //btn2.setParent(this)
-    btn2.addComponent(
-      new utils.TriggerComponent(
-        new TriggerBoxShape(
-          new Vector3(2,2,2), 
-          new Vector3(-1.5,2,0)
-        ),
-        null, null, null, null, 
-        // On camera enter:
-        () => {
-          let btn1Position = 0
-          let btn2Position = -0.12
-          this.moveTransform(btn1Position, btn2Position, 180, startPosition, gears, btn1, btn2)
-        }
-      )
-    )
+    // Gears
+    this.gears.setParent(this)
+    this.gears.addComponent(new GLTFShape('models/gears.glb'))
+    this.gears.addComponent(new Transform())
   }
 
+  public toggle(){
+    if (!this.stateVar){
+      this.moveTransform(-180, this.endPosition , this.gears)
+    } else {
+      this.moveTransform(180, this.startPosition, this.gears)
+    }
+    this.stateVar = !this.stateVar
+  }
+  // getter
+  public state(): number{
+    if (this.stateVar)
+        return 1
+    return 0
+}
+
   private moveTransform(
-    btn1Position: number, 
-    btn2Position: number, 
     gearsDirection: number,
     destination: Vector3,
     gears: Entity,
-    btn1: Entity,
-    btn2: Entity,
     buttonReset: number = 0
   ) {
     // Play button sound
     switchSound.getComponent(AudioSource).playOnce()
-
-    // Toggle highlighted button
-    btn1.getComponent(Transform).position.y = btn1Position
-    btn2.getComponent(Transform).position.y = btn2Position
 
     // Begin rotating gears
     gears.addComponentOrReplace(
@@ -133,9 +89,8 @@ export class Switchboard extends Entity {
         // On finished callback
         () => {
           gears.getComponent(utils.KeepRotatingComponent).stop()
-          btn1.getComponent(Transform).position.y = buttonReset
-          btn2.getComponent(Transform).position.y = buttonReset
           platformLockingSound.getComponent(AudioSource).playOnce()
+          //this.stateVar = !this.stateVar
         }
       )
     )
