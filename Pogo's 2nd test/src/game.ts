@@ -88,21 +88,36 @@ const button = new Button(new GLTFShape("models/buttonB.glb"),
    scale: new Vector3(0.3, 0.3, 0.3) }
 );
 
+const ball1 = new MovableEntity(
+  new GLTFShape("models/soccerBall.glb"),
+  new AudioClip("sounds/coinPickup.mp3"),
+  ang1[lever12.state()],  // r, theta, phi, phi controls height
+  switchboard1,
+  false,
+  null,
+  null,
+  0,
+);
+
+const ball2 = new MovableEntity(
+  new GLTFShape("models/soccerBall.glb"),
+  new AudioClip("sounds/coinPickup.mp3"),
+  ang2[lever22.state()],  // r, theta, phi, phi controls height
+  switchboard2,
+  false,
+  null,
+  null,
+  1,
+);
+
 button.addComponent(
-  new OnClick((): void => {
-    const ball1 = new MovableEntity(
-      new GLTFShape("models/soccerBall.glb"),
-      new AudioClip("sounds/coinPickup.mp3"),
-      ang1[lever12.state()],  // r, theta, phi, phi controls height
-      switchboard1
-    );
+  new OnPointerDown(
+    (e) => {
+
+    makeBall(0, ang2[lever12.state()]);
+    
     if (lever11.state() == solSwitchboard[0] && lever12.state() == solLever[0]){
-      const ball2 = new MovableEntity(
-        new GLTFShape("models/soccerBall.glb"),
-        new AudioClip("sounds/coinPickup.mp3"),
-        ang2[lever22.state()],  // r, theta, phi, phi controls height
-        switchboard2
-      );
+      makeBall(1, ang2[lever22.state()]);
       /*
       new utils.Interval(100, (): void => {
         if (ball1.hasFinished || !ball1.hasFinished){
@@ -116,8 +131,26 @@ button.addComponent(
       });
       */
     }
-  })
+  },
+  { 
+    button: ActionButton.POINTER,
+    hoverText: 'fire'
+  }
+  )
 );
+
+function makeBall(type, state) {
+  switch (type) {
+    case 0:
+      ball1.create(state);
+      log('ball1', ball1);
+      break;
+    case 1:
+      ball2.create(state);
+      log('ball2', ball2);
+      break;
+  }
+}
 
 
 

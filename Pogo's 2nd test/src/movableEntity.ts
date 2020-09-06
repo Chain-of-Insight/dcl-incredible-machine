@@ -5,24 +5,22 @@ export class MovableEntity extends Entity {
   constructor(
     model: GLTFShape,
     //transform: TranformConstructorArgs,
-    sound: AudioClip,
-    sphericalVelocity: Vector3,   // Vector3(r, theta, phi)
+    public sound: AudioClip,
+    public sphericalVelocity: Vector3,   // Vector3(r, theta, phi)
     //public velocity: Vector3,
-    switchboard: Switchboard,
-    public hasFinished: boolean = false
+    public switchboard: Switchboard,
+    public hasFinished: boolean = false,
+    private isAnimating: boolean = false,
+    private transform: Transform,
+    public ballIndex: number
   ) {
     super();
-    engine.addEntity(this);
-    this.setParent(switchboard)
-    const transform = new Transform(switchboard.getComponent(Transform))
+
+    this.setParent(this.switchboard)
+    this.transform = new Transform(this.switchboard.getComponent(Transform))
 
     this.addComponent(model);
-    this.addComponent(transform);
     this.addComponent(new AudioSource(sound));
-    transform.position = new Vector3(0,0,0);
-
-    let gravity = new Vector3(0, -0.05, 0);
-    let velocity = this.SphericalToCartesian(sphericalVelocity)
 
     /*
     this.addComponentOrReplace(
@@ -32,34 +30,40 @@ export class MovableEntity extends Entity {
       )
     )
     */
+  }
 
-    this.addComponent(
-      new utils.Interval(10, (): void => {
-        let newPos = this.getComponent(Transform).position.add(velocity)
-        velocity = velocity.add(gravity)
-        this.addComponentOrReplace(
-          new utils.MoveTransformComponent(
-            this.getComponent(Transform).position,
-            newPos,
-            0.01
-          )
-        )
-        if (this.getComponent(Transform).position.y + switchboard.getComponent(Transform).position.y + velocity.y < 0 && velocity.y < 0)
-        {
-          velocity = new Vector3(velocity.x*0.6, -velocity.y*0.5, velocity.z*0.6)
-          if (Math.abs(velocity.y) < 0.05 && gravity.y != 0){
-            velocity.y = 0
-            gravity = new Vector3(-velocity.x/2, 0, -velocity.z/2) // hack to change from gravity to friction
-          }
-        }
-        if (velocity.x < 0.001 && velocity.y < 0.001 && velocity.z < 0.001) 
-        {
-          this.hasFinished = true
-          this.removeComponent(utils.Interval);
-          engine.removeEntity(this);
-        }
-      })
-    );
+  public create(state) {
+    if (this.isAnimating) {
+      log('return false');
+      return;
+    }
+
+    engine.addEntity(this);
+
+    this.isAnimating = true;
+    this.sphericalVelocity = state;
+
+    log('x', this.transform.position.x);
+    log('y', this.transform.position.y);
+    log('z', this.transform.position.z);
+
+    let velocity = this.SphericalToCartesian(this.sphericalVelocity);
+    let gravity = new Vector3(0, -0.05, 0);
+
+    this.handleFlight(velocity, gravity);
+  };
+
+  // Reset entity
+  public destroy() {
+    log('destroy');
+    engine.removeEntity(this);
+    this.isAnimating = false;
+    this.hasFinished = true;
+    this.resetVelocity = this.sphericalVelocity;
+    this.setParent(this.switchboard)
+    this.transform = new Transform(this.switchboard.getComponent(Transform))
+    this.transform.position = new Vector3(0,0,0);
+    this.addComponentOrReplace(this.transform);
   }
 
   private SphericalToCartesian(sphrVel: Vector3): Vector3{
@@ -68,5 +72,52 @@ export class MovableEntity extends Entity {
     velocity.y = sphrVel.x * Math.cos(sphrVel.z*Math.PI/180)
     velocity.z = sphrVel.x * Math.sin(sphrVel.z*Math.PI/180) * Math.sin(sphrVel.y*Math.PI/180);
     return velocity;
+  }
+
+  private getPY(_pY: number): number {
+    if (typeof _pY == 'undefined') {
+      _pY = 0;
+    } else {
+      _pY = this.transform.position.y;
+    }
+    return _pY;
+  }
+
+  private handleFlight(velocity: Vector3, gravity: Vector3) {
+    let pY: number;
+    this.addComponentOrReplace(
+      new utils.Interval(10, (): void => {
+        let newPos = this.transform.position.add(velocity)
+        velocity = velocity.add(gravity)
+        this.addComponentOrReplace(
+          new utils.MoveTransformComponent(
+            this.switchboard.getComponent(Transform).position,
+            newPos,
+            0.01
+          )
+        )
+        
+        pY = this.getPY(pY);
+        let psY = this.switchboard.getComponent(Transform).position.y;
+
+        log('py', pY);
+        log('psY', psY);
+        log('newPos', newPos);
+
+        if (pY + psY + velocity.y < 0 && velocity.y < 0) {
+          log('if triggered')
+          velocity = new Vector3(velocity.x*0.6, -velocity.y*0.5, velocity.z*0.6)
+          if (Math.abs(velocity.y) < 0.05 && gravity.y != 0){
+            velocity.y = 0
+            gravity = new Vector3(-velocity.x/2, 0, -velocity.z/2) // hack to change from gravity to friction
+          }
+        }
+        if (velocity.x < 0.001 && velocity.y < 0.001 && velocity.z < 0.001) {
+          log('isFinished triggered');
+          pY = 0;
+          this.destroy();
+        }
+      })
+    );
   }
 }
