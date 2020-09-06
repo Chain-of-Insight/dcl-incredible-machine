@@ -1,13 +1,11 @@
 import utils from "../node_modules/decentraland-ecs-utils/index";
 import { Switchboard } from "./switchboard"
-
+ 
 export class MovableEntity extends Entity {
   constructor(
     model: GLTFShape,
-    //transform: TranformConstructorArgs,
     public sound: AudioClip,
     public sphericalVelocity: Vector3,   // Vector3(r, theta, phi)
-    //public velocity: Vector3,
     public switchboard: Switchboard,
     public hasFinished: boolean = false,
     private isAnimating: boolean = false,
@@ -15,13 +13,13 @@ export class MovableEntity extends Entity {
     private transform: Transform
   ) {
     super();
-
+ 
     this.setParent(this.switchboard)
     this.transform = new Transform(this.switchboard.getComponent(Transform))
-
+ 
     this.addComponent(model);
     this.addComponent(new AudioSource(sound));
-
+ 
     /*
     this.addComponentOrReplace(
       new utils.KeepRotatingComponent(
@@ -31,31 +29,31 @@ export class MovableEntity extends Entity {
     )
     */
   }
-
+ 
   public create(state) {
     if (this.isAnimating) {
       log('return false');
       return;
     }
-
+ 
     engine.addEntity(this);
-
+ 
     this.isAnimating = true;
     this.sphericalVelocity = state;
     this.resetVelocity = this.sphericalVelocity;
     this.transform.position = new Vector3(0,0,0);
     this.addComponentOrReplace(this.transform);
-
-    log('x', this.transform.position.x);
-    log('y', this.transform.position.y);
-    log('z', this.transform.position.z);
-
+ 
+    //log('x', this.transform.position.x);
+    //log('y', this.transform.position.y);
+    //log('z', this.transform.position.z);
+ 
     let velocity = this.SphericalToCartesian(this.sphericalVelocity);
     let gravity = new Vector3(0, -0.05, 0);
-
+ 
     this.handleFlight(velocity, gravity);
   };
-
+ 
   // Reset entity
   public destroy() {
     this.hasFinished = false;
@@ -63,9 +61,9 @@ export class MovableEntity extends Entity {
     this.sphericalVelocity = this.resetVelocity;
     this.transform.position = new Vector3(0,0,0);
     engine.removeEntity(this);
-    log('destroy');
+    //log('destroy');
   }
-
+ 
   private SphericalToCartesian(sphrVel: Vector3): Vector3{
     let velocity = new Vector3(0, 0, 0)
     velocity.x = sphrVel.x * Math.sin(sphrVel.z*Math.PI/180) * Math.cos(sphrVel.y*Math.PI/180);
@@ -73,7 +71,7 @@ export class MovableEntity extends Entity {
     velocity.z = sphrVel.x * Math.sin(sphrVel.z*Math.PI/180) * Math.sin(sphrVel.y*Math.PI/180);
     return velocity;
   }
-
+ 
   private getPY(_pY: number): number {
     if (typeof _pY == 'undefined') {
       _pY = 0;
@@ -82,37 +80,38 @@ export class MovableEntity extends Entity {
     }
     return _pY;
   }
-
+ 
   private handleFlight(velocity: Vector3, gravity: Vector3) {
     let pY: number;
+    //log('isFinished triggered');
     this.addComponentOrReplace(
       new utils.Interval(10, (): void => {
-        let newPos = this.transform.position.add(velocity)
-        velocity = velocity.add(gravity)
         this.addComponentOrReplace(
           new utils.MoveTransformComponent(
             this.transform.position,
-            newPos,
+            this.transform.position.add(velocity),
             0.01
           )
         )
-        
+        velocity = velocity.add(gravity)
+ 
         pY = this.getPY(pY);
         let psY = this.switchboard.getComponent(Transform).position.y;
-
-        log('py', pY);
-        log('psY', psY);
-
+ 
         if (pY + psY + velocity.y < 0 && velocity.y < 0) {
-          log('if triggered')
           velocity = new Vector3(velocity.x*0.6, -velocity.y*0.5, velocity.z*0.6)
           if (Math.abs(velocity.y) < 0.05 && gravity.y != 0){
             velocity.y = 0
-            gravity = new Vector3(-velocity.x/2, 0, -velocity.z/2) // hack to change from gravity to friction
+            //gravity = new Vector3(-velocity.x/2, 0, -velocity.z/2) // hack to change from gravity to friction
           }
         }
         if (velocity.x < 0.001 && velocity.y < 0.001 && velocity.z < 0.001) {
-          log('isFinished triggered');
+          //log('isFinished triggered');
+          velocity = null
+          gravity = null
+          this.getComponent(Transform).position = null
+          this.removeComponent(utils.Interval)
+          this.removeComponent(utils.MoveTransformComponent)
           this.hasFinished = true
           pY = 0;
           this.destroy();
@@ -120,4 +119,4 @@ export class MovableEntity extends Entity {
       })
     );
   }
-}
+};
