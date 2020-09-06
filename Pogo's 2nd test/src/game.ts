@@ -94,9 +94,9 @@ const ball1 = new MovableEntity(
   ang1[lever12.state()],  // r, theta, phi, phi controls height
   switchboard1,
   false,
+  false,
   null,
   null,
-  0,
 );
 
 const ball2 = new MovableEntity(
@@ -105,9 +105,9 @@ const ball2 = new MovableEntity(
   ang2[lever22.state()],  // r, theta, phi, phi controls height
   switchboard2,
   false,
+  false,
   null,
   null,
-  1,
 );
 
 button.addComponent(

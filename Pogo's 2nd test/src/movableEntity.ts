@@ -11,8 +11,8 @@ export class MovableEntity extends Entity {
     public switchboard: Switchboard,
     public hasFinished: boolean = false,
     private isAnimating: boolean = false,
-    private transform: Transform,
-    public ballIndex: number
+    private resetVelocity: Vector3,
+    private transform: Transform
   ) {
     super();
 
@@ -42,6 +42,9 @@ export class MovableEntity extends Entity {
 
     this.isAnimating = true;
     this.sphericalVelocity = state;
+    this.resetVelocity = this.sphericalVelocity;
+    this.transform.position = new Vector3(0,0,0);
+    this.addComponentOrReplace(this.transform);
 
     log('x', this.transform.position.x);
     log('y', this.transform.position.y);
@@ -55,15 +58,12 @@ export class MovableEntity extends Entity {
 
   // Reset entity
   public destroy() {
-    log('destroy');
-    engine.removeEntity(this);
+    this.hasFinished = false;
     this.isAnimating = false;
-    this.hasFinished = true;
-    this.resetVelocity = this.sphericalVelocity;
-    this.setParent(this.switchboard)
-    this.transform = new Transform(this.switchboard.getComponent(Transform))
+    this.sphericalVelocity = this.resetVelocity;
     this.transform.position = new Vector3(0,0,0);
-    this.addComponentOrReplace(this.transform);
+    engine.removeEntity(this);
+    log('destroy');
   }
 
   private SphericalToCartesian(sphrVel: Vector3): Vector3{
@@ -91,7 +91,7 @@ export class MovableEntity extends Entity {
         velocity = velocity.add(gravity)
         this.addComponentOrReplace(
           new utils.MoveTransformComponent(
-            this.switchboard.getComponent(Transform).position,
+            this.transform.position,
             newPos,
             0.01
           )
@@ -102,7 +102,6 @@ export class MovableEntity extends Entity {
 
         log('py', pY);
         log('psY', psY);
-        log('newPos', newPos);
 
         if (pY + psY + velocity.y < 0 && velocity.y < 0) {
           log('if triggered')
@@ -114,6 +113,7 @@ export class MovableEntity extends Entity {
         }
         if (velocity.x < 0.001 && velocity.y < 0.001 && velocity.z < 0.001) {
           log('isFinished triggered');
+          this.hasFinished = true
           pY = 0;
           this.destroy();
         }
