@@ -12,11 +12,10 @@ let solLever: Array<number> = [ 1, 1, 0, 1, 0, 0 ]
 
 // First switchboard
 const switchboard1 = new Switchboard(
-  new GLTFShape('models/switchboard.glb'),
-  new Vector3(8, 1, 8), 
+  new GLTFShape('models/platform/platform.glb'),
+  new Vector3(8, -0.13, 8),
   new Vector3(27, 5, 8)
-  )
-
+);
 // First lever, switchboard control
 const lever11 = new Lever(new GLTFShape('4bf77c44-42db-4134-90f0-06da4202ff04/models/Lever_Console.glb'),
   { position: new Vector3(33,0,20) }
@@ -48,10 +47,10 @@ lever12.addComponent(
 
 // 2nd switchboard
 const switchboard2 = new Switchboard(
-  new GLTFShape('models/switchboard.glb'),
+  new GLTFShape('models/platform/platform.glb'),
   new Vector3(27, 6, 33), 
   new Vector3(15, 9, 33)
-  )
+);
 
 // 2nd lever, switchboard control
 const lever21 = new Lever(new GLTFShape('4bf77c44-42db-4134-90f0-06da4202ff04/models/Lever_Console.glb'),
@@ -83,13 +82,35 @@ lever22.addComponent(
 
 let levers: Array<Lever> = [ lever11, lever12, lever21, lever22 ]
 
-const button = new Button(new GLTFShape("models/buttonB.glb"), 
+// Button
+const button = new Button(new GLTFShape("models/buttons/firebutton.glb"), 
   { position: new Vector3(30, 1.5, 20),
    scale: new Vector3(0.3, 0.3, 0.3) }
 );
 
+// Button sounds
+const buttonFiredSound = new Entity();
+buttonFiredSound.addComponent(
+  new AudioSource(
+    new AudioClip('sounds/cannon.mp3')
+  )
+);
+buttonFiredSound.addComponent(new Transform());
+buttonFiredSound.getComponent(Transform).position = Camera.instance.position;
+engine.addEntity(buttonFiredSound);
+
+const buttonMisfiredSound = new Entity();
+buttonMisfiredSound.addComponent(
+  new AudioSource(
+    new AudioClip('sounds/failed.mp3')
+  )
+);
+buttonMisfiredSound.addComponent(new Transform());
+buttonMisfiredSound.getComponent(Transform).position = Camera.instance.position;
+engine.addEntity(buttonMisfiredSound);
+
 const ball1 = new MovableEntity(
-  new GLTFShape("models/soccerBall.glb"),
+  new GLTFShape("models/bowlingball2.glb"),
   new AudioClip("sounds/coinPickup.mp3"),
   ang1[lever12.state()],  // r, theta, phi, phi controls height
   switchboard1,
@@ -100,7 +121,7 @@ const ball1 = new MovableEntity(
 );
 
 const ball2 = new MovableEntity(
-  new GLTFShape("models/soccerBall.glb"),
+  new GLTFShape("models/bowlingball2.glb"),
   new AudioClip("sounds/coinPickup.mp3"),
   ang2[lever22.state()],  // r, theta, phi, phi controls height
   switchboard2,
@@ -113,21 +134,22 @@ const ball2 = new MovableEntity(
 button.addComponent(
   new OnPointerDown(
     (e) => {
-    makeBall(0, ang2[lever12.state()]);
-    
-    if (lever11.state() == solSwitchboard[0] && lever12.state() == solLever[0]){
-      makeBall(1, ang2[lever22.state()]);
-
+      makeBall(0, ang2[lever12.state()]);
+      if (lever11.state() == solSwitchboard[0] && lever12.state() == solLever[0]) {
+        makeBall(1, ang2[lever22.state()]);
+      } else {
+        buttonMisfiredSound.getComponent(AudioSource).playOnce();
+      }
+    },
+    { 
+      button: ActionButton.POINTER,
+      hoverText: 'fire'
     }
-  },
-  { 
-    button: ActionButton.POINTER,
-    hoverText: 'fire'
-  }
   )
 );
 
 function makeBall(type, state) {
+  buttonFiredSound.getComponent(AudioSource).playOnce();
   switch (type) {
     case 0:
       ball1.create(state);
@@ -207,3 +229,12 @@ cube.addComponent(
   })
 )
 */
+
+// Drawing board
+const drawingboard = new Entity();
+drawingboard.addComponent(new GLTFShape('models/drawingboard/drawingboard.glb'));
+drawingboard.addComponent(new Transform({ 
+  position: new Vector3(24, -0.15, 24), 
+  scale: new Vector3(0.225, 0.225, 0.225)
+}));
+engine.addEntity(drawingboard);

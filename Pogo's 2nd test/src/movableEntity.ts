@@ -1,6 +1,6 @@
 import utils from "../node_modules/decentraland-ecs-utils/index";
 import { Switchboard } from "./switchboard"
- 
+
 export class MovableEntity extends Entity {
   constructor(
     model: GLTFShape,
@@ -42,8 +42,8 @@ export class MovableEntity extends Entity {
     this.sphericalVelocity = state;
     this.resetVelocity = this.sphericalVelocity;
     this.transform.position = new Vector3(0,0,0);
+    this.transform.scale = new Vector3(2, 2, 2);
     this.addComponentOrReplace(this.transform);
-
  
     let velocity = this.SphericalToCartesian(this.sphericalVelocity);
     let gravity = new Vector3(0, -0.05, 0);

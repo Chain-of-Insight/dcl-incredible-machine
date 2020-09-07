@@ -23,9 +23,18 @@ platformLockingSound.addComponent(new Transform())
 platformLockingSound.getComponent(Transform).position = Camera.instance.position
 engine.addEntity(platformLockingSound)
 
+const platformMovingSound = new Entity()
+platformMovingSound.addComponent(
+  new AudioSource(
+    new AudioClip('sounds/platform-moving.mp3')
+  )
+)
+platformMovingSound.addComponent(new Transform())
+platformMovingSound.getComponent(Transform).position = Camera.instance.position
+engine.addEntity(platformMovingSound);
+
 export class Switchboard extends Entity {
   public stateVar = false
-  public gears = new Entity()
   constructor(
     model: GLTFShape,
     public startPosition: Vector3, 
@@ -36,19 +45,21 @@ export class Switchboard extends Entity {
 
     // Switchboard
     this.addComponent(model)
-    this.addComponent(new Transform({ position: startPosition }))
+    this.addComponent(new Transform({ 
+      position: startPosition 
+    }));
     
     // Gears
-    this.gears.setParent(this)
-    this.gears.addComponent(new GLTFShape('models/gears.glb'))
-    this.gears.addComponent(new Transform())
+    // this.gears.setParent(this)
+    // this.gears.addComponent(new GLTFShape('models/gears.glb'))
+    // this.gears.addComponent(new Transform())
   }
 
   public toggle(){
     if (!this.stateVar){
-      this.moveTransform(-180, this.endPosition , this.gears)
+      this.moveTransform(this.endPosition);
     } else {
-      this.moveTransform(180, this.startPosition, this.gears)
+      this.moveTransform(this.startPosition);
     }
     this.stateVar = !this.stateVar
   }
@@ -59,25 +70,15 @@ export class Switchboard extends Entity {
     return 0
 }
 
-  private moveTransform(
-    gearsDirection: number,
-    destination: Vector3,
-    gears: Entity,
-    buttonReset: number = 0
-  ) {
+  private moveTransform(destination: Vector3) {
     // Play button sound
-    switchSound.getComponent(AudioSource).playOnce()
+    switchSound.getComponent(AudioSource).playOnce();
 
-    // Begin rotating gears
-    gears.addComponentOrReplace(
-      new utils.KeepRotatingComponent(
-        Quaternion.Euler(0, 0 ,gearsDirection)
-      )
-    )
+    platformMovingSound.getComponent(AudioSource).playing = true;
 
     // Move platform
-    let currentPosition = this.getComponent(Transform).position
-    let duration = Math.abs(destination.x - currentPosition.x) * 0.25
+    let currentPosition = this.getComponent(Transform).position;
+    let duration = Math.abs(destination.x - currentPosition.x) * 0.25;
     this.addComponentOrReplace(
       new MoveTransformComponent(
         // Begin moving at:
@@ -88,8 +89,8 @@ export class Switchboard extends Entity {
         duration,
         // On finished callback
         () => {
-          gears.getComponent(utils.KeepRotatingComponent).stop()
-          platformLockingSound.getComponent(AudioSource).playOnce()
+          platformMovingSound.getComponent(AudioSource).playing = false;
+          platformLockingSound.getComponent(AudioSource).playOnce();
           //this.stateVar = !this.stateVar
         }
       )
