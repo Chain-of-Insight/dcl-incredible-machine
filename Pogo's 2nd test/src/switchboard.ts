@@ -39,16 +39,24 @@ export class Switchboard extends Entity {
     model: GLTFShape,
     public startPosition: Vector3,
     public endPosition: Vector3,
-    public cannon: Entity
+    public cannon: Entity,
+    initState: number
   ) {
     super()
     engine.addEntity(this)
 
     // Switchboard
     this.addComponent(model)
-    this.addComponent(new Transform({ 
-      position: startPosition 
-    }));
+    if (initState == 0){
+      this.addComponent(new Transform({ 
+        position: startPosition 
+      }));
+    } else{
+      this.addComponent(new Transform({ 
+        position: endPosition 
+      }));
+      this.stateVar = true
+    }
     
     // Cannon
     this.cannon.setParent(this);

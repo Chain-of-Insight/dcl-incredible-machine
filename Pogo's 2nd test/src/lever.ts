@@ -11,8 +11,15 @@ engine.addEntity(switchSound)
 
 export class Lever extends Entity {
   public stateVar = false;
-  constructor(model: GLTFShape, transform: TranformConstructorArgs) {
+  constructor(model: GLTFShape, 
+    transform: TranformConstructorArgs,
+    initState: number
+    ) {
     super();
+
+    if (initState==1){
+        this.stateVar = true;
+    }
 
     this.addComponent(model);
     this.addComponent(new Transform(transform));
