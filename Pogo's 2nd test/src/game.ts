@@ -6,6 +6,7 @@ import { PuzzlePiece } from './puzzlePiece';
 import decentralandEcsUtils from '../node_modules/decentraland-ecs-utils/index';
 
 
+<<<<<<< HEAD
 let angles1: Array<Vector3> = [ new Vector3(1, 30, 45), new Vector3(1, 90, 30) ]
 const puzzlePiece1 = new PuzzlePiece(
   new Vector3(8, -0.13, 8),
@@ -21,6 +22,132 @@ const puzzlePiece2 = new PuzzlePiece(
   new Vector3(33,0,25),
   angles2
 )
+=======
+
+// FIRST ITEMSET //////////////////////////////////////////
+
+// Cannon 1
+const cannon1 = new Entity();
+cannon1.addComponent(new GLTFShape('models/cannon/Cannon_01.glb'));
+cannon1.addComponent(
+  new Transform({
+    rotation: new Quaternion(0, 0.5, 0, 1)
+  })
+);
+// Target 1
+const target1 = new Entity();
+target1.addComponent(new GLTFShape('models/target/target.glb'));
+target1.addComponent(
+  new Transform({
+    position: new Vector3(35, 14, 14),
+    rotation: new Quaternion(0, 0.5, 0, 1)
+  })
+);
+engine.addEntity(target1);
+
+// First switchboard
+const switchboard1 = new Switchboard(
+  new GLTFShape('models/platform/platform.glb'),
+  new Vector3(8, -0.13, 8),
+  new Vector3(27, 5, 8),
+  cannon1
+);
+// First lever, switchboard control
+const lever11 = new Lever(
+  new GLTFShape('models/lever/button1.glb'),
+  { 
+    position: new Vector3(33,0,20)
+  }
+);
+lever11.addComponent(
+  new OnClick((): void => {
+    switchboard1.toggle();
+    lever11.toggle();
+  })
+);
+
+// First lever, angle control
+let ang1: Array<Vector3> = [ new Vector3(1, 30, 45), new Vector3(1, 90, 30) ]
+const lever12 = new Lever(new GLTFShape('models/lever/button1.glb'),
+  { 
+    position: new Vector3(32,0,20)
+  }
+);
+lever12.addComponent(
+  new OnClick((): void => {
+    lever12.toggle();
+  })
+);
+////////////////////////////////////////////////////
+
+
+
+
+
+// SECOND ITEMSET //////////////////////////////////////////
+
+// Cannon 2
+const cannon2 = new Entity();
+cannon2.addComponent(new GLTFShape('models/cannon/Cannon_01.glb'))
+cannon2.addComponent(
+  new Transform({
+    rotation: new Quaternion(0, 0.5, 0, 1)
+  })
+);
+// Target 2
+const target2 = new Entity();
+target2.addComponent(new GLTFShape('models/target/target.glb'));
+target2.addComponent(
+  new Transform({
+    position: new Vector3(33, 11, 43),
+    rotation: new Quaternion(0, 0.5, 0, 1)
+  })
+);
+engine.addEntity(target2);
+
+// 2nd switchboard
+const switchboard2 = new Switchboard(
+  new GLTFShape('models/platform/platform.glb'),
+  new Vector3(27, 6, 33), 
+  new Vector3(15, 9, 33),
+  cannon2
+);
+
+// 2nd lever, switchboard control
+const lever21 = new Lever(
+  new GLTFShape('models/lever/button1.glb'),
+  { 
+    position: new Vector3(33,0,25),
+    rotation: new Quaternion(0, -90, 0, 1)
+  }
+);
+lever21.addComponent(
+  new OnClick((): void => {
+    switchboard2.toggle();
+    lever21.toggle();
+  })
+);
+
+// 2nd lever, angle control
+let ang2: Array<Vector3> = [ new Vector3(0.5, 30, 40), new Vector3(1, 30, 35) ]
+const lever22 = new Lever(
+  new GLTFShape('models/lever/button1.glb'),
+  { 
+    position: new Vector3(32,0,25),
+    rotation: new Quaternion(0, -90, 0, 1)
+  }
+);
+lever22.addComponent(
+  new OnClick((): void => {
+    lever22.toggle();
+  })
+);
+////////////////////////////////////////////////////
+
+
+
+
+>>>>>>> e6990b99e4a2cde8d75234d1abba634e14a2b8b4
 
 let angles3: Array<Vector3> = [ new Vector3(0.75, -35, 40), new Vector3(75, -30, 15) ]
 const puzzlePiece3 = new PuzzlePiece(
