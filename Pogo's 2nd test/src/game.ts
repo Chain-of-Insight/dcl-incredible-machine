@@ -41,7 +41,7 @@ const lever11 = new Lever(
   { 
     position: new Vector3(33,0,20)
   }
-);
+);//here
 
 // First lever, angle control
 let ang1: Array<Vector3> = [ new Vector3(1, 30, 45), new Vector3(1, 90, 30) ]
@@ -307,3 +307,12 @@ drawingboard.addComponent(new Transform({
   scale: new Vector3(0.225, 0.225, 0.225)
 }));
 engine.addEntity(drawingboard);
+
+
+
+lever11.addComponent(
+  new OnClick((): void => {
+    switchboard1.toggle();
+    lever11.toggle();
+  })
+);
