@@ -1,9 +1,9 @@
 import * as ui from '../node_modules/@dcl/ui-utils/index';
 import { Dialog } from '../node_modules/@dcl/ui-utils/utils/types';
 
-const ALCHEMIST_PORTRAIT = 'models/dialog/alchemist.png';
+const PHYSICIST_PORTRAIT = 'models/dialog/physicist.png';
 
-export class AlchemistNPC {
+export class PhysicistNPC {
   constructor(
     public message: Dialog[],
     public messageIndex: number,
@@ -11,7 +11,7 @@ export class AlchemistNPC {
   ) {
     this.dialog = new ui.DialogWindow(
       { 
-        path: ALCHEMIST_PORTRAIT
+        path: PHYSICIST_PORTRAIT
       }, 
       true // Dark theme
     );
@@ -19,15 +19,16 @@ export class AlchemistNPC {
   }
 }
 
+// Physicist
 export const IntroText: Dialog[] = [
   {
-    text: 'Hi there, welcome to my incredible alchemy station!'
+    text: 'Hi there, you\'re just in time to test my incredible machine!'
   },
   {
-    text: 'Hrmm...that door over there seems to be made of a lightweight, shiny metal'
+    text: 'Oh...you\'re carrying gallium-aluminum mixture? I can use that for my invention, thanks!'
   },
   {
-    text: 'Alas, alchemy is an imprecise science. Even the correct solution might yield poor results',
+    text: 'Help me determine the correct firing distance of these turrets so I can complete the reaction chain',
   },
   {
     text: 'Calculate with precision before wasting precious time, haha. Good luck!',
@@ -35,29 +36,22 @@ export const IntroText: Dialog[] = [
   }
 ];
 
-export const HasGalliumText: Dialog[] = [
+export const FirstHitText: Dialog[] = [
   {
-    text: 'Wow, so you were able to make gallium. Impressive!'
+    text: 'A direct hit great job!'
   },
   {
-    text: 'Gallium can devour many lightweight metals. Why don\'t you try applying some to that door',
+    text: 'Hrmm...one turret keeps getting stuck, did you figure out why?',
     isEndOfDialog: true
   }
 ];
 
-export const GalliumApplyNotReady: Dialog[] = [
+export const FinalHitText: Dialog[] = [
   {
-    text: 'You seem to be on the right track'
+    text: 'You\'re a pro, wow!'
   },
   {
-    text: 'Give the gallium a little more time to do it\'s thing',
-    isEndOfDialog: true
-  }
-];
-
-export const KeepHittingText: Dialog[] = [
-  {
-    text: 'A piece just broke off, I think it\'s working',
+    text: 'The final chain reaction has been triggered, congratulations!',
     isEndOfDialog: true
   }
 ];
