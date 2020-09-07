@@ -36,8 +36,10 @@ export class Lever extends Entity {
     // Light me up
     if (this.stateVar) {
       engine.addEntity(this.highlight);
+      this.addComponentOrReplace(LightModel);
     } else {
       engine.removeEntity(this.highlight);
+      this.addComponentOrReplace(DefaultModel);
     }
   }
   public state(): number{
