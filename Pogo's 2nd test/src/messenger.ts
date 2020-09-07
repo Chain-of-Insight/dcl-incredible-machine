@@ -22,13 +22,13 @@ export class PhysicistNPC {
 // Physicist
 export const IntroText: Dialog[] = [
   {
-    text: 'Hi there, you\'re just in time to test my incredible machine!'
+    text: 'You\'re just in time to test my incredible machine!'
   },
   {
-    text: 'Oh...you\'re carrying gallium-aluminum mixture? I can use that for my invention, thanks!'
+    text: 'Oh...and you\'re carrying gallium-aluminum mixture? I can use that for my invention, thanks!'
   },
   {
-    text: 'Help me determine the correct firing distance of these turrets so I can complete the reaction chain',
+    text: 'Help me determine the correct firing angles and positions for these turrets',
   },
   {
     text: 'Calculate with precision before wasting precious time, haha. Good luck!',
@@ -48,10 +48,10 @@ export const FirstHitText: Dialog[] = [
 
 export const FinalHitText: Dialog[] = [
   {
-    text: 'You\'re a pro, wow!'
+    text: 'Wow, you\'re a pro! I\'ve gathered all the data I need on these turrets'
   },
   {
-    text: 'The final chain reaction has been triggered, congratulations!',
+    text: 'And the final chain reaction has been triggered, congratulations!',
     isEndOfDialog: true
   }
 ];

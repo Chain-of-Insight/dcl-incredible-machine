@@ -48,24 +48,4 @@ export class Lever extends Entity {
 
     return 0;
   }
-
-  /*
-  toggle(value: boolean, playSound = false) {
-    if (playSound) {
-      const source = new AudioSource(this.clip)
-      this.addComponentOrReplace(source)
-      source.playing = true
-    }
-
-    const animator = this.getComponent(Animator)
-    const activateClip = animator.getClip('activate')
-    const deactivateClip = animator.getClip('deactivate')
-    activateClip.stop()
-    deactivateClip.stop()
-    const clip = value ? activateClip : deactivateClip
-    clip.play()
-
-    this.state = !this.state
-  }
-  */
 }

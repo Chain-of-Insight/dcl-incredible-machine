@@ -1,6 +1,5 @@
-import utils from "../node_modules/decentraland-ecs-utils/index"
-import { TriggerBoxShape } from "../node_modules/decentraland-ecs-utils/triggers/triggerSystem"
-import { MoveTransformComponent } from "../node_modules/decentraland-ecs-utils/transform/component/move"
+// import utils from "../node_modules/decentraland-ecs-utils/index"
+import { MoveTransformComponent } from "../node_modules/decentraland-ecs-utils/transform/component/move";
 
 // Sounds
 const switchSound = new Entity()

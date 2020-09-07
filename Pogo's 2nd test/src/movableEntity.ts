@@ -19,15 +19,6 @@ export class MovableEntity extends Entity {
  
     this.addComponent(model);
     this.addComponent(new AudioSource(sound));
- 
-    /*
-    this.addComponentOrReplace(
-      new utils.KeepRotatingComponent(
-        //Quaternion.Euler(-Math.cos(sphericalVelocity.y)*180, 0, Math.sin(-sphericalVelocity.y)*180)
-        Quaternion.Euler(-Math.sin(90-sphericalVelocity.y)*180, 0, -Math.cos(sphericalVelocity.y)*180)
-      )
-    )
-    */
   }
  
   public create(state) {
@@ -58,7 +49,6 @@ export class MovableEntity extends Entity {
     this.sphericalVelocity = this.resetVelocity;
     this.transform.position = new Vector3(0,0,0);
     engine.removeEntity(this);
-    //log('destroy');
   }
  
   private SphericalToCartesian(sphrVel: Vector3): Vector3{
