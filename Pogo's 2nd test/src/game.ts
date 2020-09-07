@@ -42,12 +42,6 @@ const lever11 = new Lever(
     position: new Vector3(33,0,20)
   }
 );
-lever11.addComponent(
-  new OnClick((): void => {
-    switchboard1.toggle();
-    lever11.toggle();
-  })
-);
 
 // First lever, angle control
 let ang1: Array<Vector3> = [ new Vector3(1, 30, 45), new Vector3(1, 90, 30) ]
@@ -160,7 +154,7 @@ const ball2 = new MovableEntity(
 const button1 = new Button(
   new GLTFShape("models/buttons/firebutton.glb"), 
   { 
-    position: new Vector3(30, 1.5, 20),
+    position: new Vector3(30, 1.5, 19),
     scale: new Vector3(0.3, 0.3, 0.3) 
   }
 );
