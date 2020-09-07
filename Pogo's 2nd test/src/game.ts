@@ -10,11 +10,20 @@ let solLever: Array<number> = [ 1, 1, 0, 1, 0, 0 ]
 
 // FIRST ITEMSET //////////////////////////////////////////
 
+// Cannon 1
+const cannon1 = new Entity();
+cannon1.addComponent(new GLTFShape('models/cannon/Cannon_01.glb'))
+cannon1.addComponent(
+  new Transform({
+    rotation: new Quaternion(0, 0.5, 0, 1)
+  })
+);
 // First switchboard
 const switchboard1 = new Switchboard(
   new GLTFShape('models/platform/platform.glb'),
   new Vector3(8, -0.13, 8),
-  new Vector3(27, 5, 8)
+  new Vector3(27, 5, 8),
+  cannon1
 );
 // First lever, switchboard control
 const lever11 = new Lever(new GLTFShape('4bf77c44-42db-4134-90f0-06da4202ff04/models/Lever_Console.glb'),
@@ -45,11 +54,20 @@ lever12.addComponent(
 
 // SECOND ITEMSET //////////////////////////////////////////
 
+// Cannon 2
+const cannon2 = new Entity();
+cannon2.addComponent(new GLTFShape('models/cannon/Cannon_01.glb'))
+cannon2.addComponent(
+  new Transform({
+    rotation: new Quaternion(0, 0.5, 0, 1)
+  })
+);
 // 2nd switchboard
 const switchboard2 = new Switchboard(
   new GLTFShape('models/platform/platform.glb'),
   new Vector3(27, 6, 33), 
-  new Vector3(15, 9, 33)
+  new Vector3(15, 9, 33),
+  cannon2
 );
 
 // 2nd lever, switchboard control

@@ -37,8 +37,9 @@ export class Switchboard extends Entity {
   public stateVar = false
   constructor(
     model: GLTFShape,
-    public startPosition: Vector3, 
-    public endPosition: Vector3, 
+    public startPosition: Vector3,
+    public endPosition: Vector3,
+    public cannon: Entity
   ) {
     super()
     engine.addEntity(this)
@@ -49,10 +50,8 @@ export class Switchboard extends Entity {
       position: startPosition 
     }));
     
-    // Gears
-    // this.gears.setParent(this)
-    // this.gears.addComponent(new GLTFShape('models/gears.glb'))
-    // this.gears.addComponent(new Transform())
+    // Cannon
+    this.cannon.setParent(this);
   }
 
   public toggle(){
