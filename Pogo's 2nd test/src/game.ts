@@ -1,18 +1,17 @@
-import { MovableEntity } from './movableEntity'
-import { Switchboard } from "./switchboard"
-import { Button } from "./button"
-import { Lever } from "./lever"
-import utils from "../node_modules/decentraland-ecs-utils/index";
+import { MovableEntity } from './movableEntity';
+import { Switchboard } from "./switchboard";
+import { Button } from "./button";
+import { Lever } from "./lever";
 
-let solSwitchboard: Array<number> = [ 1, 1, 0, 1, 0, 0 ] 
-let solLever: Array<number> = [ 1, 1, 0, 1, 0, 0 ]
+let solSwitchboard: Array<number> = [ 1, 1, 0, 1, 0, 0 ];
+let solLever: Array<number> = [ 1, 1, 0, 1, 0, 0 ];
 
 
 // FIRST ITEMSET //////////////////////////////////////////
 
 // Cannon 1
 const cannon1 = new Entity();
-cannon1.addComponent(new GLTFShape('models/cannon/Cannon_01.glb'))
+cannon1.addComponent(new GLTFShape('models/cannon/Cannon_01.glb'));
 cannon1.addComponent(
   new Transform({
     rotation: new Quaternion(0, 0.5, 0, 1)
@@ -26,24 +25,29 @@ const switchboard1 = new Switchboard(
   cannon1
 );
 // First lever, switchboard control
-const lever11 = new Lever(new GLTFShape('4bf77c44-42db-4134-90f0-06da4202ff04/models/Lever_Console.glb'),
-  { position: new Vector3(33,0,20) }
+const lever11 = new Lever(
+  new GLTFShape('models/lever/Lever_Console.glb'),
+  { 
+    position: new Vector3(33,0,20)
+  }
 );
 lever11.addComponent(
   new OnClick((): void => {
-    switchboard1.toggle()
-    lever11.toggle()
+    switchboard1.toggle();
+    lever11.toggle();
   })
 );
 
 // First lever, angle control
 let ang1: Array<Vector3> = [ new Vector3(1, 30, 45), new Vector3(1, 90, 30) ]
-const lever12 = new Lever(new GLTFShape('4bf77c44-42db-4134-90f0-06da4202ff04/models/Lever_Console.glb'),
-  { position: new Vector3(32,0,20) }
+const lever12 = new Lever(new GLTFShape('models/lever/Lever_Console.glb'),
+  { 
+    position: new Vector3(32,0,20)
+  }
 );
 lever12.addComponent(
   new OnClick((): void => {
-    lever12.toggle()
+    lever12.toggle();
   })
 );
 ////////////////////////////////////////////////////
@@ -71,24 +75,32 @@ const switchboard2 = new Switchboard(
 );
 
 // 2nd lever, switchboard control
-const lever21 = new Lever(new GLTFShape('4bf77c44-42db-4134-90f0-06da4202ff04/models/Lever_Console.glb'),
-  { position: new Vector3(33,0,25) }
+const lever21 = new Lever(
+  new GLTFShape('models/lever/Lever_Console.glb'),
+  { 
+    position: new Vector3(33,0,25),
+    rotation: new Quaternion(0, -90, 0, 1)
+  }
 );
 lever21.addComponent(
   new OnClick((): void => {
-    switchboard2.toggle()
-    lever21.toggle()
+    switchboard2.toggle();
+    lever21.toggle();
   })
 );
 
 // 2nd lever, angle control
 let ang2: Array<Vector3> = [ new Vector3(0.5, 30, 40), new Vector3(1, 30, 35) ]
-const lever22 = new Lever(new GLTFShape('4bf77c44-42db-4134-90f0-06da4202ff04/models/Lever_Console.glb'),
-  { position: new Vector3(32,0,25) }
+const lever22 = new Lever(
+  new GLTFShape('models/lever/Lever_Console.glb'),
+  { 
+    position: new Vector3(32,0,25),
+    rotation: new Quaternion(0, -90, 0, 1)
+  }
 );
 lever22.addComponent(
   new OnClick((): void => {
-    lever22.toggle()
+    lever22.toggle();
   })
 );
 ////////////////////////////////////////////////////
