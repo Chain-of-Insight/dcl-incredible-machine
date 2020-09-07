@@ -9,27 +9,35 @@ switchSound.addComponent(new Transform())
 switchSound.getComponent(Transform).position = Camera.instance.position
 engine.addEntity(switchSound)
 
+// Highlight
+const LightModel = new GLTFShape('models/lever/button2.glb'); 
+
 export class Lever extends Entity {
-  public stateVar = false;
-  constructor(model: GLTFShape, transform: TranformConstructorArgs) {
+  public stateVar: boolean = false;
+  public highlight: Entity;
+  constructor(model: GLTFShape, private transform: TranformConstructorArgs) {
     super();
 
     this.addComponent(model);
     this.addComponent(new Transform(transform));
 
-    let animator = new Animator();
-    // let pull = new AnimationState('no_exist');
-    // pull.setParams({looping: false});
-    this.addComponentOrReplace(animator);
-    // this.getComponent(Animator).addClip(pull);
+    this.highlight = new Entity();
+    this.highlight.addComponent(LightModel);
+    this.highlight.addComponent(new Transform(transform));
 
     engine.addEntity(this);
   }
 
   public toggle() {
-    this.stateVar = !this.stateVar
+    this.stateVar = !this.stateVar;
     // Play button sound
     switchSound.getComponent(AudioSource).playOnce();
+    // Light me up
+    if (this.stateVar) {
+      engine.addEntity(this.highlight);
+    } else {
+      engine.removeEntity(this.highlight);
+    }
   }
   public state(): number{
     if (this.stateVar)

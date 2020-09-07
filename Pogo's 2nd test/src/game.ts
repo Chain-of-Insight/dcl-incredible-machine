@@ -26,7 +26,7 @@ const switchboard1 = new Switchboard(
 );
 // First lever, switchboard control
 const lever11 = new Lever(
-  new GLTFShape('models/lever/Lever_Console.glb'),
+  new GLTFShape('models/lever/button1.glb'),
   { 
     position: new Vector3(33,0,20)
   }
@@ -40,7 +40,7 @@ lever11.addComponent(
 
 // First lever, angle control
 let ang1: Array<Vector3> = [ new Vector3(1, 30, 45), new Vector3(1, 90, 30) ]
-const lever12 = new Lever(new GLTFShape('models/lever/Lever_Console.glb'),
+const lever12 = new Lever(new GLTFShape('models/lever/button1.glb'),
   { 
     position: new Vector3(32,0,20)
   }
@@ -76,7 +76,7 @@ const switchboard2 = new Switchboard(
 
 // 2nd lever, switchboard control
 const lever21 = new Lever(
-  new GLTFShape('models/lever/Lever_Console.glb'),
+  new GLTFShape('models/lever/button1.glb'),
   { 
     position: new Vector3(33,0,25),
     rotation: new Quaternion(0, -90, 0, 1)
@@ -92,7 +92,7 @@ lever21.addComponent(
 // 2nd lever, angle control
 let ang2: Array<Vector3> = [ new Vector3(0.5, 30, 40), new Vector3(1, 30, 35) ]
 const lever22 = new Lever(
-  new GLTFShape('models/lever/Lever_Console.glb'),
+  new GLTFShape('models/lever/button1.glb'),
   { 
     position: new Vector3(32,0,25),
     rotation: new Quaternion(0, -90, 0, 1)
