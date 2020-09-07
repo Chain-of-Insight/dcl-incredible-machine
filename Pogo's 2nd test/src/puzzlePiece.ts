@@ -42,6 +42,8 @@ export class PuzzlePiece {
     public leverPosition: Vector3,
     public angles: Array<Vector3>
   ) {
+    let randSwitch = this.getRandomBinary()
+    let randLever = this.getRandomBinary()
     // Cannon 1
     this.cannon = new Cannon(
         new GLTFShape('models/cannon/Cannon_01.glb'),
@@ -49,7 +51,6 @@ export class PuzzlePiece {
             rotation: new Quaternion(0, 0.5, 0, 1)
         })
     )
-    let randSwitch = this.getRandomBinary()
     // First switchboard
     this.switchboard = new Switchboard(
         new GLTFShape('models/platform/platform.glb'),
@@ -60,7 +61,7 @@ export class PuzzlePiece {
     );
     // First lever, switchboard control
     this.lever1 = new Lever(
-        new GLTFShape('models/lever/Lever_Console.glb'),
+        new GLTFShape('models/lever/button1.glb'),
         { position: leverPosition },
         randSwitch
     );
@@ -70,7 +71,7 @@ export class PuzzlePiece {
           this.lever1.toggle();
         })
     );
-    this.lever2 = new Lever(new GLTFShape('models/lever/Lever_Console.glb'),
+    this.lever2 = new Lever(new GLTFShape('models/lever/button1.glb'),
         { position: leverPosition.add(new Vector3(-1,0,0)) },
         this.getRandomBinary()
     );

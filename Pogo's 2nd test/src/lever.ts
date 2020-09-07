@@ -15,7 +15,8 @@ const LightModel = new GLTFShape('models/lever/button2.glb');
 export class Lever extends Entity {
   public stateVar: boolean = false;
   public highlight: Entity;
-  constructor(model: GLTFShape, 
+  constructor(
+    model: GLTFShape, 
     private transform: TranformConstructorArgs,
     initState: number
     ) {
@@ -36,6 +37,7 @@ export class Lever extends Entity {
   }
 
   public toggle() {
+    log('toggling')
     this.stateVar = !this.stateVar;
     // Play button sound
     switchSound.getComponent(AudioSource).playOnce();
@@ -52,24 +54,4 @@ export class Lever extends Entity {
 
     return 0;
   }
-
-  /*
-  toggle(value: boolean, playSound = false) {
-    if (playSound) {
-      const source = new AudioSource(this.clip)
-      this.addComponentOrReplace(source)
-      source.playing = true
-    }
-
-    const animator = this.getComponent(Animator)
-    const activateClip = animator.getClip('activate')
-    const deactivateClip = animator.getClip('deactivate')
-    activateClip.stop()
-    deactivateClip.stop()
-    const clip = value ? activateClip : deactivateClip
-    clip.play()
-
-    this.state = !this.state
-  }
-  */
 }
