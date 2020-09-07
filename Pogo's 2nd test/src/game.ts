@@ -134,33 +134,6 @@ lever22.addComponent(
 
 let levers: Array<Lever> = [ lever11, lever12, lever21, lever22 ]
 
-// Button
-const button = new Button(new GLTFShape("models/buttons/firebutton.glb"), 
-  { position: new Vector3(30, 1.5, 20),
-   scale: new Vector3(0.3, 0.3, 0.3) }
-);
-
-// Button sounds
-const buttonFiredSound = new Entity();
-buttonFiredSound.addComponent(
-  new AudioSource(
-    new AudioClip('sounds/cannon.mp3')
-  )
-);
-buttonFiredSound.addComponent(new Transform());
-buttonFiredSound.getComponent(Transform).position = Camera.instance.position;
-engine.addEntity(buttonFiredSound);
-
-const buttonMisfiredSound = new Entity();
-buttonMisfiredSound.addComponent(
-  new AudioSource(
-    new AudioClip('sounds/failed.mp3')
-  )
-);
-buttonMisfiredSound.addComponent(new Transform());
-buttonMisfiredSound.getComponent(Transform).position = Camera.instance.position;
-engine.addEntity(buttonMisfiredSound);
-
 const ball1 = new MovableEntity(
   new GLTFShape("models/bowlingball2.glb"),
   new AudioClip("sounds/coinPickup.mp3"),
@@ -183,17 +156,67 @@ const ball2 = new MovableEntity(
   null,
 );
 
-button.addComponent(
+// Button
+const button1 = new Button(
+  new GLTFShape("models/buttons/firebutton.glb"), 
+  { 
+    position: new Vector3(30, 1.5, 20),
+    scale: new Vector3(0.3, 0.3, 0.3) 
+  }
+);
+
+const button2 = new Button(
+  new GLTFShape("models/buttons/firebutton.glb"), 
+  { 
+    position: new Vector3(30, 1.5, 26),
+    scale: new Vector3(0.3, 0.3, 0.3),
+    rotation: new Quaternion(0, -20, 0, 1)
+  }
+);
+
+// Buttons (firing controls)
+const buttonFiredSound = new Entity();
+buttonFiredSound.addComponent(
+  new AudioSource(
+    new AudioClip('sounds/cannon.mp3')
+  )
+);
+buttonFiredSound.addComponent(new Transform());
+buttonFiredSound.getComponent(Transform).position = Camera.instance.position;
+engine.addEntity(buttonFiredSound);
+
+const buttonMisfiredSound = new Entity();
+buttonMisfiredSound.addComponent(
+  new AudioSource(
+    new AudioClip('sounds/failed.mp3')
+  )
+);
+buttonMisfiredSound.addComponent(new Transform());
+buttonMisfiredSound.getComponent(Transform).position = Camera.instance.position;
+engine.addEntity(buttonMisfiredSound);
+
+button1.addComponent(
   new OnPointerDown(
     (e) => {
       makeBall(0, ang2[lever12.state()]);
+    },
+    { 
+      button: ActionButton.POINTER,
+      hoverText: 'fire'
+    }
+  )
+);
+
+button2.addComponent(
+  new OnPointerDown(
+    (e) => {
       if (lever11.state() == solSwitchboard[0] && lever12.state() == solLever[0]) {
         makeBall(1, ang2[lever22.state()]);
       } else {
         buttonMisfiredSound.getComponent(AudioSource).playOnce();
       }
     },
-    { 
+    {
       button: ActionButton.POINTER,
       hoverText: 'fire'
     }
