@@ -10,7 +10,8 @@ export class Ball extends Entity {
     public hasFinished: boolean = false,
     private isAnimating: boolean = false,
     private resetVelocity: Vector3,
-    private transform: Transform
+    private transform: Transform,
+    public targetPosition: Vector3
   ) {
     super();
  
@@ -25,9 +26,9 @@ export class Ball extends Entity {
 
   }
 
-  private create(state) {
+  private create(state: Vector3) {
     if (this.isAnimating) {
-      log('return false');
+      //log('return false');
       return;
     }
  
@@ -74,6 +75,8 @@ export class Ball extends Entity {
  
   private handleFlight(velocity: Vector3, gravity: Vector3) {
     let pY: number;
+    let targetHit = false;
+    let tarPosInScene = this.targetPosition.subtract(this.switchboard.getComponent(Transform).position)
     this.addComponent(
       new utils.Interval(10, (): void => {
         this.addComponent(
@@ -88,6 +91,10 @@ export class Ball extends Entity {
         pY = this.getPY(pY);
         let psY = this.switchboard.getComponent(Transform).position.y;
  
+        if (!targetHit && this.distanceCheck(this.transform.position, tarPosInScene)){
+          log('hit da targetz')
+          targetHit = true
+        }
         if (pY + psY + velocity.y < 0 && velocity.y < 0) {
           velocity = new Vector3(velocity.x*0.6, -velocity.y*0.5, velocity.z*0.6)
           if (Math.abs(velocity.y) < 0.05 && gravity.y != 0){
@@ -107,5 +114,10 @@ export class Ball extends Entity {
         }
       })
     );
+  }
+
+  private distanceCheck(point1: Vector3, point2: Vector3): boolean{
+    let dist = Math.sqrt((point1.x-point2.x)**2+(point1.y-point2.y)**2+(point1.z-point2.z))
+    return dist < 3
   }
 };

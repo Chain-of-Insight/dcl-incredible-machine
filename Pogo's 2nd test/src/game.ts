@@ -11,17 +11,20 @@ const puzzlePiece1 = new PuzzlePiece(
   new Vector3(8, -0.13, 8),
   new Vector3(27, 5, 8),
   new Vector3(33,0,20),
+  new Vector3(34, 10, 13),
   angles1
 )
 
-let angles2: Array<Vector3> = [ new Vector3(0.5, 30, 40), new Vector3(1, 30, 35) ]
+let angles2: Array<Vector3> = [ new Vector3(0.5, 30, 40), new Vector3(1, 60, 35) ]
 const puzzlePiece2 = new PuzzlePiece(
   new Vector3(27, 6, 33), 
   new Vector3(15, 9, 33),
   new Vector3(33,0,25),
+  new Vector3(33, 11, 43),
   angles2
 )
 
+/*
 let angles3: Array<Vector3> = [ new Vector3(0.75, -35, 40), new Vector3(75, -30, 15) ]
 const puzzlePiece3 = new PuzzlePiece(
   new Vector3(50, 3, 50), 
@@ -29,6 +32,7 @@ const puzzlePiece3 = new PuzzlePiece(
   new Vector3(33,0,30),
   angles3
 )
+*/
 
 
 // Button
@@ -42,7 +46,7 @@ button.addComponent(
     (e) => {
       if (puzzlePiece1.makeBall(0)){
         if (puzzlePiece2.makeBall(1)){
-          puzzlePiece3.makeBall(2)
+          //puzzlePiece3.makeBall(2)
         }
       }
     },
