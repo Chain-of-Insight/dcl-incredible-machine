@@ -17,6 +17,17 @@ cannon1.addComponent(
     rotation: new Quaternion(0, 0.5, 0, 1)
   })
 );
+// Target 1
+const target1 = new Entity();
+target1.addComponent(new GLTFShape('models/target/target.glb'));
+target1.addComponent(
+  new Transform({
+    position: new Vector3(35, 14, 14),
+    rotation: new Quaternion(0, 0.5, 0, 1)
+  })
+);
+engine.addEntity(target1);
+
 // First switchboard
 const switchboard1 = new Switchboard(
   new GLTFShape('models/platform/platform.glb'),
@@ -66,6 +77,17 @@ cannon2.addComponent(
     rotation: new Quaternion(0, 0.5, 0, 1)
   })
 );
+// Target 2
+const target2 = new Entity();
+target2.addComponent(new GLTFShape('models/target/target.glb'));
+target2.addComponent(
+  new Transform({
+    position: new Vector3(33, 11, 43),
+    rotation: new Quaternion(0, 0.5, 0, 1)
+  })
+);
+engine.addEntity(target2);
+
 // 2nd switchboard
 const switchboard2 = new Switchboard(
   new GLTFShape('models/platform/platform.glb'),
