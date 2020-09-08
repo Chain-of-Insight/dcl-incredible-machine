@@ -4,10 +4,8 @@ import { Lever } from "./lever"
 import { Ball } from "./ball"
 import { PhysicistNPC } from "./messenger"
 import { Solution } from "./solution"
+import utils from "../node_modules/decentraland-ecs-utils/index"
 
-
-//let solSwitchboard: Array<number> = [ 1, 1, 0, 1, 0, 0 ];
-//let solLever: Array<number> = [ 0, 1, 0, 1, 0, 0 ];
 
 export class PuzzlePiece {
   public ball;
@@ -45,11 +43,15 @@ export class PuzzlePiece {
     this.target.addComponent(new GLTFShape('models/target/target.glb'));
     this.target.addComponent(
     new Transform({
-        position: targetPosition
+        position: targetPosition,
+        rotation: Quaternion.Euler(0, angles[randLever].y, 0)
       })
     );
-    // adding the entity is done inside switchboard
-    //engine.addEntity(this.target);
+    this.target.addComponent(new utils.KeepRotatingComponent(
+            Quaternion.Euler(0, 15, 0)
+        )
+    )
+    engine.addEntity(this.target);
 
     // First switchboard
     this.switchboard = new Switchboard(
@@ -62,7 +64,6 @@ export class PuzzlePiece {
     );
     // First lever, switchboard control
     this.lever1 = new Lever(
-        //new GLTFShape('models/lever/button1.glb'),
         { position: leverPosition,
           scale: new Vector3(2, 2, 2),
           rotation: leverRotation },
@@ -76,7 +77,6 @@ export class PuzzlePiece {
         })
     );
     this.lever2 = new Lever(
-        //new GLTFShape('models/lever/button1.glb'),
         { position: leverPosition.add(new Vector3(-3,0,0)),
             scale: new Vector3(2, 2, 2),
             rotation: leverRotation },
