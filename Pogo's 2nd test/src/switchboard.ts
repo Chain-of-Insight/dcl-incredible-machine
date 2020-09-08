@@ -94,7 +94,7 @@ export class Switchboard extends Entity {
 
     // Move platform
     let currentPosition = this.getComponent(Transform).position;
-    let duration = Math.abs(destination.x - currentPosition.x) * 0.25;
+    let duration = this.distanceTraveled(currentPosition, destination) * 0.25;
     this.addComponentOrReplace(
       new MoveTransformComponent(
         // Begin moving at:
@@ -119,6 +119,11 @@ export class Switchboard extends Entity {
       )
     )
 
+  }
+
+  private distanceTraveled(point1: Vector3, point2: Vector3): number {
+    let dist = Math.sqrt((point1.x-point2.x)**2+(point1.y-point2.y)**2+(point1.z-point2.z)**2)
+    return dist
   }
 
   private angle(point1: Vector3, point2: Vector3): number{

@@ -1,8 +1,9 @@
 
 export class Solution {
-    public static solSwitchboard: Array<number> = [ 1, 0, 0, 1 ];
-    public static solLever: Array<number> = [ 0, 1, 0, 1 ];
+    public static solSwitchboard: Array<number> = [ 1, 0, 1, 1 ];
+    public static solLever: Array<number> = [ 0, 1, 1, 1 ];
 
+    // this doesn't work without dynamic targets, which are not yet implemented
     public static randomizeSolution(){
         this.solSwitchboard[0] = this.getRandomBinary()
         this.solSwitchboard[1] = this.getRandomBinary()

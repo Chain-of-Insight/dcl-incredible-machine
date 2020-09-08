@@ -65,7 +65,7 @@ export class PuzzlePiece {
     this.lever1 = new Lever(
         //new GLTFShape('models/lever/button1.glb'),
         { position: leverPosition,
-          scale: new Vector3(1.5, 1.5, 1.5),
+          scale: new Vector3(2, 2, 2),
           rotation: leverRotation },
         randSwitch
     );
@@ -78,8 +78,8 @@ export class PuzzlePiece {
     );
     this.lever2 = new Lever(
         //new GLTFShape('models/lever/button1.glb'),
-        { position: leverPosition.add(new Vector3(-1,0,0)),
-            scale: new Vector3(1.5, 1.5, 1.5),
+        { position: leverPosition.add(new Vector3(-2,0,0)),
+            scale: new Vector3(2, 2, 2),
             rotation: leverRotation },
         randLever
     );

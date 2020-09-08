@@ -140,6 +140,7 @@ export class Ball extends Entity {
         pY = this.getPY(pY);
         let psY = this.switchboard.getComponent(Transform).position.y;
  
+        //log(this.transform.position.add(this.switchboard.getComponent(Transform).position))   // use this to find target positions quickly
         if (!targetHit && this.distanceCheck(this.transform.position, tarPosInScene)){  // hit target check
           this.messenger.onHit()
           targetHit = true
@@ -156,7 +157,7 @@ export class Ball extends Entity {
             gravity = new Vector3(-velocity.x/2, 0, -velocity.z/2) // hack to change from gravity to friction
           }
         }
-        if (velocity.x < 0.001 && velocity.y < 0.001 && velocity.z < 0.001) {
+        if (Math.abs(velocity.x) < 0.001 && Math.abs(velocity.y) < 0.001 && Math.abs(velocity.z) < 0.001) {
           velocity = null
           gravity = null
           this.getComponent(Transform).position = null
@@ -181,8 +182,7 @@ export class Ball extends Entity {
   }
 
   private distanceCheck(point1: Vector3, point2: Vector3): boolean{
-    let dist = Math.sqrt((point1.x-point2.x)**2+(point1.y-point2.y)**2+(point1.z-point2.z))
-
-    return dist < 1.5
+    let dist = Math.sqrt((point1.x-point2.x)**2+(point1.y-point2.y)**2+(point1.z-point2.z)**2)
+    return dist < 2
   }
 };

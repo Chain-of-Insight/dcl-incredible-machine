@@ -22,6 +22,12 @@ export class Plants {
             this.sound(1),
             new Transform({ position: pos.add(offset), scale: this.shape(1) })
         )
+
+        const plant3 = new Plant(
+            this.randomModel(),
+            this.sound(2),
+            new Transform({ position: pos.add(offset).add(offset), scale: this.shape(2) })
+        )
     }
 
     // encodes the lever solutions
@@ -36,11 +42,11 @@ export class Plants {
 
     // encodes the platform solutions
     private static sound(i:number):AudioClip {
-        let switchVal = Solution.solLever[i]
+        let switchVal = Solution.solSwitchboard[i]
         if (switchVal == 0){
             return audioClip1
         } else {
-            return audioClip1
+            return audioClip2
         }
     }
 

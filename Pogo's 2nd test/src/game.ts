@@ -22,20 +22,20 @@ let angles1: Array<Vector3> = [ new Vector3(1, 33, 45), new Vector3(1, 85, 45) ]
 const puzzlePiece1 = new PuzzlePiece(
   new Vector3(8, -0.13, 8),
   new Vector3(20, 5, 8),
-  new Vector3(33,0,20),
-  new Vector3(27, 10, 13),
+  new Vector3(33,0,27),
+  new Vector3(30.08, 10.22, 14.54),
   angles1,
   new Quaternion(0, 0, 0, 1),
   messenger,
   0
 )
 
-let angles2: Array<Vector3> = [ new Vector3(0.8, 30, 35), new Vector3(0.95, 0, 35) ]
+let angles2: Array<Vector3> = [new Vector3(0.9, -10, 35), new Vector3(1, -54, 40) ]
 const puzzlePiece2 = new PuzzlePiece(
-  new Vector3(15, 9, 33),
-  new Vector3(27, 6, 33), 
-  new Vector3(33,0,25),
-  new Vector3(33, 11, 33),
+  new Vector3(27, 6, 50), 
+  new Vector3(15, 9, 50),
+  new Vector3(33, 0, 33),
+  new Vector3(33, 11, 40),
   angles2,
   new Quaternion(0, -90, 0, 1),
   messenger,
@@ -43,12 +43,26 @@ const puzzlePiece2 = new PuzzlePiece(
 )
 
 
+let angles3: Array<Vector3> = [ new Vector3(1, 205, 40), new Vector3(0.9, 195, 45) ]
+const puzzlePiece3 = new PuzzlePiece(
+  new Vector3(50, 8, 40), 
+  new Vector3(50, 12, 50),
+  new Vector3(44, 0, 33),
+  new Vector3(32.78, 10.91, 45.38),
+  angles3,
+  new Quaternion(0, -180, 0, 1),
+  messenger,
+  2
+)
+
+
 // Buttons
 const button1 = new Button(
   new GLTFShape("models/buttons/firebutton.glb"), 
   { 
-    position: new Vector3(30, 1.5, 19),
-    scale: new Vector3(0.3, 0.3, 0.3) 
+    position: new Vector3(30, 1.5, 30),
+    scale: new Vector3(0.3, 0.3, 0.3),
+    rotation: Quaternion.Euler(0, 90, 0)
   }
 );
 
@@ -70,7 +84,7 @@ button1.addComponent(
       messenger.reset()
       if (puzzlePiece1.makeBall(0)){
         if (puzzlePiece2.makeBall(1)){
-          //puzzlePiece3.makeBall(2)
+          puzzlePiece3.makeBall(2)
         }
       }
     },
@@ -106,6 +120,8 @@ button2.addComponent(
   )
 );
 */
+
+
 
 // XXX @pogo: I have been unable to draw or display                     !!!!!!!!!!!!!!!!!
 // anything on the drawing board (irony) so 
