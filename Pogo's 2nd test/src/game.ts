@@ -9,7 +9,7 @@ import { Plants } from './plants';
 import { PrizePlatform } from './prizePlatform'
 
 // NPC
-import { PhysicistNPC, IntroText, FirstHitText, FinalHitText } from './messenger';
+import { PhysicistNPC, IntroText } from './messenger';
 
 // Display introduction message
 let messenger = new PhysicistNPC(IntroText, 0);
@@ -20,8 +20,7 @@ let pos2 = new Vector3(32,0,35)
 let pos3 = new Vector3(43,0,35)
 let pos4 = new Vector3(42,0,25)
 Plants.buildPlants(pos1, pos2, pos3, pos4)
-PrizePlatform.createPlatforms()
-
+PrizePlatform.createPlatforms(messenger);
 
 let angles1: Array<Vector3> = [ new Vector3(1, 33, 45), new Vector3(1, 15, 45) ]
 const puzzlePiece1 = new PuzzlePiece(
@@ -47,7 +46,6 @@ const puzzlePiece2 = new PuzzlePiece(
   1
 )
 
-
 let angles3: Array<Vector3> = [ new Vector3(1, 205, 40), new Vector3(0.9, 195, 45) ]
 const puzzlePiece3 = new PuzzlePiece(
   new Vector3(50, 8, 40), 
@@ -72,7 +70,6 @@ const puzzlePiece4 = new PuzzlePiece(
   3
 )
 
-
 // Buttons
 const button1 = new Button(
   new GLTFShape("models/buttons/firebutton.glb"), 
@@ -84,16 +81,15 @@ const button1 = new Button(
 );
 
 // Buttons (firing controls)
-const buttonFiredSound = new Entity();
-buttonFiredSound.addComponent(
-  new AudioSource(
-    new AudioClip('sounds/cannon.mp3')
-  )
-);
-buttonFiredSound.addComponent(new Transform());
-buttonFiredSound.getComponent(Transform).position = Camera.instance.position;
-engine.addEntity(buttonFiredSound);
-
+// const buttonFiredSound = new Entity();
+// buttonFiredSound.addComponent(
+//   new AudioSource(
+//     new AudioClip('sounds/cannon.mp3')
+//   )
+// );
+// buttonFiredSound.addComponent(new Transform());
+// buttonFiredSound.getComponent(Transform).position = Camera.instance.position;
+// engine.addEntity(buttonFiredSound);
 
 button1.addComponent(
   new OnPointerDown(
@@ -113,34 +109,6 @@ button1.addComponent(
     }
   )
 );
-
-
-/*
-const button2 = new Button(
-  new GLTFShape("models/buttons/firebutton.glb"), 
-  { 
-    position: new Vector3(30, 1.5, 26),
-    scale: new Vector3(0.3, 0.3, 0.3),
-    rotation: new Quaternion(0, -20, 0, 1)
-  }
-);
-
-button2.addComponent(
-  new OnPointerDown(
-    (e) => {
-      if (puzzlePiece1.checkSol(0)) {
-        puzzlePiece2.makeBall(1)
-      } 
-    },
-    {
-      button: ActionButton.POINTER,
-      hoverText: 'fire'
-    }
-  )
-);
-*/
-
-
 
 // XXX @pogo: I have been unable to draw or display                     !!!!!!!!!!!!!!!!!
 // anything on the drawing board (irony) so 

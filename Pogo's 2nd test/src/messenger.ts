@@ -7,9 +7,10 @@ const PHYSICIST_PORTRAIT = 'models/dialog/physicist.png';
 export class PhysicistNPC {
   public numHits = 0;
   public maxHits = 4;
-  public hitCounter
-  public displayedFirst = false
-  public displayedLast = false
+  public hitCounter: ui.UICounter;
+  public displayedFirst = false;
+  public displayedLast = false;
+  public icon: ui.SmallIcon;
   constructor(
     public message: Dialog[],
     public messageIndex: number,
@@ -22,8 +23,7 @@ export class PhysicistNPC {
       true // Dark theme
     );
 
-    // XXX @pogo:
-    let targetIcon = new ui.SmallIcon(
+    this.icon = new ui.SmallIcon(
       'models/icons/target.png', 
       // x, y
       -80, 80, 
