@@ -26,7 +26,8 @@ const puzzlePiece1 = new PuzzlePiece(
   new Vector3(27, 10, 13),
   angles1,
   new Quaternion(0, 0, 0, 1),
-  messenger
+  messenger,
+  0
 )
 
 let angles2: Array<Vector3> = [ new Vector3(0.8, 30, 35), new Vector3(0.95, 0, 35) ]
@@ -37,7 +38,8 @@ const puzzlePiece2 = new PuzzlePiece(
   new Vector3(33, 11, 33),
   angles2,
   new Quaternion(0, -90, 0, 1),
-  messenger
+  messenger,
+  1
 )
 
 

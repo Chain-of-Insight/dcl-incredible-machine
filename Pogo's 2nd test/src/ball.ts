@@ -183,6 +183,6 @@ export class Ball extends Entity {
   private distanceCheck(point1: Vector3, point2: Vector3): boolean{
     let dist = Math.sqrt((point1.x-point2.x)**2+(point1.y-point2.y)**2+(point1.z-point2.z))
 
-    return dist < 3
+    return dist < 1.5
   }
 };

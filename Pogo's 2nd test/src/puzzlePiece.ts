@@ -25,10 +25,15 @@ export class PuzzlePiece {
     public targetPosition: Vector3,
     public angles: Array<Vector3>,
     public leverRotation: Quaternion,
-    public messenger: PhysicistNPC
+    public messenger: PhysicistNPC,
+    index: number
   ) {
     let randSwitch = this.getRandomBinary()
     let randLever = this.getRandomBinary()
+    while (randSwitch == Solution.solSwitchboard[index] && randLever == Solution.solLever[index]){  // never have the exact solution from the beginning, right?
+        randSwitch = this.getRandomBinary()
+        randLever = this.getRandomBinary()
+    }
     // Cannon 1
     this.cannon = new Cannon(
         new GLTFShape('models/cannon/Cannon_01.glb'),
