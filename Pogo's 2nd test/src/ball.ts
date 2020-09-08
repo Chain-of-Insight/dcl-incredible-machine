@@ -1,7 +1,7 @@
 import utils from "../node_modules/decentraland-ecs-utils/index";
 import { Switchboard } from "./switchboard"
 import { PhysicistNPC } from "./messenger"
-
+import { PrizePlatform } from "./prizePlatform"
 
 // sounds
 const buttonFiredSound = new Entity();
@@ -33,6 +33,17 @@ targetHitSound.addComponent(
 targetHitSound.addComponent(new Transform());
 targetHitSound.getComponent(Transform).position = Camera.instance.position;
 engine.addEntity(targetHitSound);
+
+const victorySound = new Entity();
+victorySound.addComponent(
+  new AudioSource(
+    new AudioClip('sounds/victory.mp3')
+  )
+);
+victorySound.addComponent(new Transform());
+victorySound.getComponent(Transform).position = Camera.instance.position;
+engine.addEntity(victorySound);
+
 
 export class Ball extends Entity {
   constructor(
@@ -131,10 +142,13 @@ export class Ball extends Entity {
         let psY = this.switchboard.getComponent(Transform).position.y;
  
         if (!targetHit && this.distanceCheck(this.transform.position, tarPosInScene)){  // hit target check
-          log('hit da targetz')
           this.messenger.onHit()
           targetHit = true
-          targetHitSound.getComponent(AudioSource).playOnce();
+          if (this.messenger.numHits < this.messenger.maxHits){
+            targetHitSound.getComponent(AudioSource).playOnce();
+          } else {
+            victorySound.getComponent(AudioSource).playOnce();
+          }
         }
         if (pY + psY + velocity.y < 0 && velocity.y < 0) {
           velocity = new Vector3(velocity.x*0.6, -velocity.y*0.5, velocity.z*0.6)
@@ -156,6 +170,10 @@ export class Ball extends Entity {
           }
           if (!targetHit){
             buttonMisfiredSound.getComponent(AudioSource).playOnce();
+          } else {
+            if (this.messenger.numHits < this.messenger.maxHits){
+              buttonFiredSound.getComponent(AudioSource).playOnce();
+            }
           }
           this.destroy();
         }

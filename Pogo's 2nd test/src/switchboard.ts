@@ -98,10 +98,10 @@ export class Switchboard extends Entity {
         () => {
           platformMovingSound.getComponent(AudioSource).playing = false;
           platformLockingSound.getComponent(AudioSource).playOnce();
-          //this.stateVar = !this.stateVar
         }
       )
     )
+    /*
     this.target.addComponentOrReplace(
       new utils.RotateTransformComponent(
         this.target.getComponent(Transform).rotation,
@@ -109,6 +109,7 @@ export class Switchboard extends Entity {
         duration
       )
     )
+    */
   }
 
   private angle(point1: Vector3, point2: Vector3): number{

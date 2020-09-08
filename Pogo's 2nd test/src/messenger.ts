@@ -1,5 +1,6 @@
 import * as ui from '../node_modules/@dcl/ui-utils/index';
 import { Dialog } from '../node_modules/@dcl/ui-utils/utils/types';
+import { PrizePlatform } from "./prizePlatform"
 
 const PHYSICIST_PORTRAIT = 'models/dialog/physicist.png';
 
@@ -60,6 +61,7 @@ export class PhysicistNPC {
         if (this.numHits == this.maxHits){
           this.dialog.openDialogWindow(FinalHitText, 0);
           this.displayedLast = true
+          PrizePlatform.moveElevator()
         }
       }
     }

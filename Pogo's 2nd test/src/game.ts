@@ -5,6 +5,8 @@ import { Switchboard } from "./switchboard";
 import { Button } from "./button";
 import { Lever } from "./lever";
 import { PuzzlePiece } from "./puzzlePiece"
+import { Plants } from './plants';
+import { PrizePlatform } from './prizePlatform'
 
 // NPC
 import { PhysicistNPC, IntroText, FirstHitText, FinalHitText } from './messenger';
@@ -15,8 +17,13 @@ let messenger = new PhysicistNPC(IntroText, 0);
 let solSwitchboard: Array<number> = [ 1, 1, 0, 1, 0, 0 ];
 let solLever: Array<number> = [ 1, 1, 0, 1, 0, 0 ];
 
+//let plants = new Plants()
+//plants.buildPlants
+Plants.buildPlants()
+PrizePlatform.createPlatforms()
 
-let angles1: Array<Vector3> = [ new Vector3(1, 30, 45), new Vector3(1, 90, 30) ]
+
+let angles1: Array<Vector3> = [ new Vector3(1, 30, 45), new Vector3(1, 45, 30) ]
 const puzzlePiece1 = new PuzzlePiece(
   new Vector3(8, -0.13, 8),
   new Vector3(27, 5, 8),
