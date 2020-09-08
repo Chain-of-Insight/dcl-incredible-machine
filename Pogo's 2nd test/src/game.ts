@@ -231,7 +231,11 @@ button2.addComponent(
 );
 
 function makeBall(type, state) {
+  // XXX @pogo: when we add this firing sound to the abstract class
+  // if the ball .isAnimating = true we can play the misfired sound instead
+  // of the firing sound shown below
   buttonFiredSound.getComponent(AudioSource).playOnce();
+  // XXX end;
   switch (type) {
     case 0:
       ball1.create(state);
@@ -242,9 +246,9 @@ function makeBall(type, state) {
   }
 };
 
-// XXX: I have been unable to draw or display
+// XXX @pogo: I have been unable to draw or display
 // anything on the drawing board (irony) so 
-// we won't be able to use it :(
+// seems we won't be able to use it :(
 
 // Drawing board
 // const drawingboard = new Entity();
