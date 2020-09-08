@@ -1,3 +1,5 @@
+import * as ui from '../node_modules/@dcl/ui-utils/index';
+
 import { MovableEntity } from './movableEntity';
 import { Switchboard } from "./switchboard";
 import { Button } from "./button";
@@ -140,7 +142,7 @@ lever22.addComponent(
 let levers: Array<Lever> = [ lever11, lever12, lever21, lever22 ]
 
 const ball1 = new MovableEntity(
-  new GLTFShape("models/bowlingball2.glb"),
+  new GLTFShape("models/bowlingball.glb"),
   new AudioClip("sounds/directhit.mp3"),
   ang1[lever12.state()],  // r, theta, phi, phi controls height
   switchboard1,
@@ -151,7 +153,7 @@ const ball1 = new MovableEntity(
 );
 
 const ball2 = new MovableEntity(
-  new GLTFShape("models/bowlingball2.glb"),
+  new GLTFShape("models/bowlingball.glb"),
   new AudioClip("sounds/directhit.mp3"),
   ang2[lever22.state()],  // r, theta, phi, phi controls height
   switchboard2,
@@ -240,11 +242,27 @@ function makeBall(type, state) {
   }
 };
 
+// XXX: I have been unable to draw or display
+// anything on the drawing board (irony) so 
+// we won't be able to use it :(
+
 // Drawing board
-const drawingboard = new Entity();
-drawingboard.addComponent(new GLTFShape('models/drawingboard/drawingboard.glb'));
-drawingboard.addComponent(new Transform({ 
-  position: new Vector3(24, -0.15, 24), 
-  scale: new Vector3(0.225, 0.225, 0.225)
-}));
-engine.addEntity(drawingboard);
+// const drawingboard = new Entity();
+// drawingboard.addComponent(new GLTFShape('models/drawingboard/drawingboard.glb'));
+// drawingboard.addComponent(new Transform({ 
+//   position: new Vector3(24, -0.15, 24), 
+//   scale: new Vector3(0.225, 0.225, 0.225)
+// }));
+// engine.addEntity(drawingboard);
+
+// XXX @pogo:
+let targetIcon = new ui.SmallIcon(
+  'models/icons/target.png', 
+  // x, y
+  -80, 80, 
+  // Width, height
+  48, 48
+);
+let hitCounter = new ui.UICounter(0, -15, 80);
+// Add a hit:
+// hitCounter.increase();
