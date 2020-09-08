@@ -10,5 +10,6 @@ export class Platform extends Entity {
       this.addComponent(model);
       this.addComponent(new Transform(transform));
       this.addComponent(new AudioSource(audio));
+      
     }
   }

@@ -41,11 +41,11 @@ export class PuzzlePiece {
     this.target.addComponent(new GLTFShape('models/target/target.glb'));
     this.target.addComponent(
     new Transform({
-        position: targetPosition,
-        rotation: Quaternion.Euler(0, -angles[randLever].y, 0)
+        position: targetPosition
       })
     );
-    engine.addEntity(this.target);
+    // adding the entity is done inside switchboard
+    //engine.addEntity(this.target);
 
     // First switchboard
     this.switchboard = new Switchboard(
@@ -60,6 +60,7 @@ export class PuzzlePiece {
     this.lever1 = new Lever(
         //new GLTFShape('models/lever/button1.glb'),
         { position: leverPosition,
+          scale: new Vector3(1.5, 1.5, 1.5),
           rotation: leverRotation },
         randSwitch
     );
@@ -73,6 +74,7 @@ export class PuzzlePiece {
     this.lever2 = new Lever(
         //new GLTFShape('models/lever/button1.glb'),
         { position: leverPosition.add(new Vector3(-1,0,0)),
+            scale: new Vector3(1.5, 1.5, 1.5),
             rotation: leverRotation },
         randLever
     );
@@ -101,6 +103,7 @@ export class PuzzlePiece {
   public makeBall(index: number): boolean{
     this.ball.create(this.angles[this.lever2.state()])
     if (this.switchboard.state() == Solution.solSwitchboard[index] && this.lever2.state() == Solution.solLever[index]){
+      log('good!')
       this.ball.create(this.angles[this.lever2.state()])
       return true
     }

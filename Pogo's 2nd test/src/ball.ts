@@ -1,7 +1,6 @@
 import utils from "../node_modules/decentraland-ecs-utils/index";
 import { Switchboard } from "./switchboard"
 import { PhysicistNPC } from "./messenger"
-import { PrizePlatform } from "./prizePlatform"
 
 // sounds
 const buttonFiredSound = new Entity();

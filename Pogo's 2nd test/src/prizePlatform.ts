@@ -17,13 +17,13 @@ export class PrizePlatform {
         const staticPlatform = new Platform(
             model2,
             audio,
-            new Transform({ position: new Vector3(13,15,25), rotation: Quaternion.Euler(0, 90, 0) })
+            new Transform({ position: new Vector3(13,10,25), rotation: Quaternion.Euler(0, 90, 0) })
         )
 
         this.elevator = new Platform(
             model2,
             audio,
-            new Transform({ position: new Vector3(18,15,25) })
+            new Transform({ position: new Vector3(18,10,25) })
         )
     }
 
@@ -33,7 +33,7 @@ export class PrizePlatform {
         if (state2.y != 0){
             state2.y = 0
         } else {
-            state2.y = 15
+            state2.y = 10
         }
         let duration = (state1.y+state2.y)* 0.25;
         this.elevator.addComponentOrReplace(

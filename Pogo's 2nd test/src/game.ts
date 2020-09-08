@@ -14,32 +14,27 @@ import { PhysicistNPC, IntroText, FirstHitText, FinalHitText } from './messenger
 // Display introduction message
 let messenger = new PhysicistNPC(IntroText, 0);
 
-let solSwitchboard: Array<number> = [ 1, 1, 0, 1, 0, 0 ];
-let solLever: Array<number> = [ 1, 1, 0, 1, 0, 0 ];
-
-//let plants = new Plants()
-//plants.buildPlants
 Plants.buildPlants()
 PrizePlatform.createPlatforms()
 
 
-let angles1: Array<Vector3> = [ new Vector3(1, 30, 45), new Vector3(1, 45, 30) ]
+let angles1: Array<Vector3> = [ new Vector3(1, 33, 45), new Vector3(1, 85, 45) ]
 const puzzlePiece1 = new PuzzlePiece(
   new Vector3(8, -0.13, 8),
-  new Vector3(27, 5, 8),
+  new Vector3(20, 5, 8),
   new Vector3(33,0,20),
-  new Vector3(34, 10, 13),
+  new Vector3(27, 10, 13),
   angles1,
   new Quaternion(0, 0, 0, 1),
   messenger
 )
 
-let angles2: Array<Vector3> = [ new Vector3(0.5, 30, 40), new Vector3(1, 60, 35) ]
+let angles2: Array<Vector3> = [ new Vector3(0.8, 30, 35), new Vector3(0.95, 0, 35) ]
 const puzzlePiece2 = new PuzzlePiece(
-  new Vector3(27, 6, 33), 
   new Vector3(15, 9, 33),
+  new Vector3(27, 6, 33), 
   new Vector3(33,0,25),
-  new Vector3(33, 11, 43),
+  new Vector3(33, 11, 33),
   angles2,
   new Quaternion(0, -90, 0, 1),
   messenger
@@ -52,15 +47,6 @@ const button1 = new Button(
   { 
     position: new Vector3(30, 1.5, 19),
     scale: new Vector3(0.3, 0.3, 0.3) 
-  }
-);
-
-const button2 = new Button(
-  new GLTFShape("models/buttons/firebutton.glb"), 
-  { 
-    position: new Vector3(30, 1.5, 26),
-    scale: new Vector3(0.3, 0.3, 0.3),
-    rotation: new Quaternion(0, -20, 0, 1)
   }
 );
 
@@ -93,6 +79,17 @@ button1.addComponent(
   )
 );
 
+
+/*
+const button2 = new Button(
+  new GLTFShape("models/buttons/firebutton.glb"), 
+  { 
+    position: new Vector3(30, 1.5, 26),
+    scale: new Vector3(0.3, 0.3, 0.3),
+    rotation: new Quaternion(0, -20, 0, 1)
+  }
+);
+
 button2.addComponent(
   new OnPointerDown(
     (e) => {
@@ -106,7 +103,7 @@ button2.addComponent(
     }
   )
 );
-
+*/
 
 // XXX @pogo: I have been unable to draw or display                     !!!!!!!!!!!!!!!!!
 // anything on the drawing board (irony) so 
