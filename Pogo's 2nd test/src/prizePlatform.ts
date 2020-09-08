@@ -82,7 +82,7 @@ export class PrizePlatform {
           openChestSound.getComponent(AudioSource).playOnce();
           // Remove archery icon / counter
           this.messenger.icon.image.visible = false;
-          this.messenger.hitCounter.uiText.fontSize = 0;
+          this.messenger.hitCounter.uiText.visible = false;
           // Notification
           ui.displayAnnouncement('You solved all the puzzles congratulations!');
           // Remove pointer down event
