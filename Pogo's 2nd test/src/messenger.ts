@@ -1,8 +1,10 @@
 import * as ui from '../node_modules/@dcl/ui-utils/index';
-import { Dialog } from '../node_modules/@dcl/ui-utils/utils/types';
+import { Dialog, ImageData } from '../node_modules/@dcl/ui-utils/utils/types';
 import { PrizePlatform } from "./prizePlatform"
 
 const PHYSICIST_PORTRAIT = 'models/dialog/physicist.png';
+const ALCHEMIST_PORTRAIT = 'models/dialog/alchemist.png';
+
 
 export class PhysicistNPC {
   public numHits = 0;
@@ -11,14 +13,14 @@ export class PhysicistNPC {
   public displayedFirst = false;
   public displayedLast = false;
   public icon: ui.SmallIcon;
+  public dialog2;
+  public alchemist: ImageData;
   constructor(
-    public message: Dialog[],
-    public messageIndex: number,
     private dialog: ui.DialogWindow = null
   ) {
     this.dialog = new ui.DialogWindow(
       { 
-        path: PHYSICIST_PORTRAIT
+        path: ALCHEMIST_PORTRAIT
       }, 
       true // Dark theme
     );
@@ -32,7 +34,7 @@ export class PhysicistNPC {
     );
     this.hitCounter = new ui.UICounter(this.numHits, -15, 80);
 
-    this.dialog.openDialogWindow(this.message, this.messageIndex);
+    this.dialog.openDialogWindow(this.IntroText, 0);
   }
 
   onHit(){
@@ -55,11 +57,11 @@ export class PhysicistNPC {
   public dispMessage(){
     if (this.numHits>0){
       if (this.numHits < this.maxHits && !this.displayedFirst){
-        this.dialog.openDialogWindow(FirstHitText, 0);
+        this.dialog.openDialogWindow(this.FirstHitText, 0);
         this.displayedFirst = true
       } else {
         if (this.numHits == this.maxHits){
-          this.dialog.openDialogWindow(FinalHitText, 0);
+          this.dialog.openDialogWindow(this.FinalHitText, 0);
           this.displayedLast = true
           PrizePlatform.endGame()
         }
@@ -67,10 +69,19 @@ export class PhysicistNPC {
     }
   }
 
-}
+  public dispFinalMessage(){
+    this.alchemist = new ImageData()
+    this.alchemist.path = ALCHEMIST_PORTRAIT
+
+    this.dialog.openDialogWindow(this.FinalText, 0);
+    //this.dialog2.openDialogWindow(FinalText2, 0);
+    //this.dialog.openDialogWindow(FinalText3, 0);
+  }
+
+
 
 // Physicist
-export const IntroText: Dialog[] = [
+IntroText: Dialog[] = [
   {
     text: 'You\'re just in time to test my incredible machine!'
   },
@@ -86,7 +97,7 @@ export const IntroText: Dialog[] = [
   }
 ];
 
-export const FirstHitText: Dialog[] = [
+FirstHitText: Dialog[] = [
   {
     text: 'A direct hit great job!'
   },
@@ -96,12 +107,30 @@ export const FirstHitText: Dialog[] = [
   }
 ];
 
-export const FinalHitText: Dialog[] = [
+FinalHitText: Dialog[] = [
   {
     text: 'Wow, you\'re a pro! I\'ve gathered all the data I need on these turrets'
   },
   {
-    text: 'And the final chain reaction has been triggered, congratulations!',
+    text: 'Please head towards the right arrow to get to the treasure chest',
     isEndOfDialog: true
   }
 ];
+
+FinalText: Dialog[] = [
+  {
+    text: 'Great job! You\'ve solved our challenges',
+  },
+  {
+    text: 'This was fun for us to build',
+  },
+  {
+    text: 'And we hope you enjoyed playing it',
+    portrait: this.alchemist,
+  },
+  {
+    text: '... and that, of course!',
+    isEndOfDialog: true
+  }
+]
+}

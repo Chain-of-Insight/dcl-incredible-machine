@@ -133,6 +133,7 @@ export class PrizePlatform {
                 engine.removeEntity(arrow)
             }
             catch {}
+            this.messenger.dispFinalMessage()
             let state1 = this.elevator.getComponent(Transform).position
             let state2 = new Vector3(state1.x, this.platformPosition.y, state1.z)
             this.moveElevator(state1, state2, duration)

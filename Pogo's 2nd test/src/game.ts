@@ -9,10 +9,10 @@ import { Plants } from './plants';
 import { PrizePlatform } from './prizePlatform'
 
 // NPC
-import { PhysicistNPC, IntroText } from './messenger';
+import { PhysicistNPC } from './messenger';
 
 // Display introduction message
-let messenger = new PhysicistNPC(IntroText, 0);
+let messenger = new PhysicistNPC();
 
 // the 4 plant positions
 let pos1 = new Vector3(31,0,25)
@@ -80,23 +80,10 @@ const button1 = new Button(
   }
 );
 
-// Buttons (firing controls)
-// const buttonFiredSound = new Entity();
-// buttonFiredSound.addComponent(
-//   new AudioSource(
-//     new AudioClip('sounds/cannon.mp3')
-//   )
-// );
-// buttonFiredSound.addComponent(new Transform());
-// buttonFiredSound.getComponent(Transform).position = Camera.instance.position;
-// engine.addEntity(buttonFiredSound);
-
 PrizePlatform.endGame()
-
 button1.addComponent(
   new OnPointerDown(
     (e) => {
-      /*
       messenger.reset()
       if (puzzlePiece1.makeBall(0)){
         if (puzzlePiece2.makeBall(1)){
@@ -105,7 +92,6 @@ button1.addComponent(
           }
         }
       }
-      */
     },
     { 
       button: ActionButton.POINTER,
