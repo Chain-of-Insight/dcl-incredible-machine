@@ -4,6 +4,11 @@ import { Dialog } from '../node_modules/@dcl/ui-utils/utils/types';
 const PHYSICIST_PORTRAIT = 'models/dialog/physicist.png';
 
 export class PhysicistNPC {
+  public numHits = 0;
+  public maxHits = 2;
+  public hitCounter
+  public displayedFirst = false
+  public displayedLast = false
   constructor(
     public message: Dialog[],
     public messageIndex: number,
@@ -15,7 +20,49 @@ export class PhysicistNPC {
       }, 
       true // Dark theme
     );
+
+    // XXX @pogo:
+    let targetIcon = new ui.SmallIcon(
+      'models/icons/target.png', 
+      // x, y
+      -80, 80, 
+      // Width, height
+      48, 48
+    );
+    this.hitCounter = new ui.UICounter(this.numHits, -15, 80);
+
     this.dialog.openDialogWindow(this.message, this.messageIndex);
+  }
+
+  onHit(){
+    this.numHits++
+    this.hitCounter.increase()
+  }
+  
+  reset(){
+    this.hitCounter.set(0)
+    this.numHits = 0
+  }
+
+  hardReset(){
+    this.hitCounter.set(0)
+    this.numHits = 0
+    this.displayedFirst = false
+    this.displayedLast = false
+  }
+
+  public dispMessage(){
+    if (this.numHits>0){
+      if (this.numHits < this.maxHits && !this.displayedFirst){
+        this.dialog.openDialogWindow(FirstHitText, 0);
+        this.displayedFirst = true
+      } else {
+        if (this.numHits == this.maxHits){
+          this.dialog.openDialogWindow(FinalHitText, 0);
+          this.displayedLast = true
+        }
+      }
+    }
   }
 }
 

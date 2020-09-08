@@ -1,4 +1,4 @@
-// import utils from "../node_modules/decentraland-ecs-utils/index"
+import utils from "../node_modules/decentraland-ecs-utils/index"
 import { MoveTransformComponent } from "../node_modules/decentraland-ecs-utils/transform/component/move";
 
 // Sounds
@@ -38,16 +38,25 @@ export class Switchboard extends Entity {
     model: GLTFShape,
     public startPosition: Vector3,
     public endPosition: Vector3,
-    public cannon: Entity
+    public cannon: Entity,
+    public target: Entity,
+    initState: number
   ) {
     super()
     engine.addEntity(this)
 
     // Switchboard
     this.addComponent(model)
-    this.addComponent(new Transform({ 
-      position: startPosition 
-    }));
+    if (initState == 0){
+      this.addComponent(new Transform({ 
+        position: startPosition 
+      }));
+    } else{
+      this.addComponent(new Transform({ 
+        position: endPosition 
+      }));
+      this.stateVar = true
+    }
     
     // Cannon
     this.cannon.setParent(this);
@@ -93,5 +102,18 @@ export class Switchboard extends Entity {
         }
       )
     )
+    this.target.addComponentOrReplace(
+      new utils.RotateTransformComponent(
+        this.target.getComponent(Transform).rotation,
+        Quaternion.Euler(0, 90-this.angle(currentPosition,this.target.getComponent(Transform).position), 0),
+        duration
+      )
+    )
+  }
+
+  private angle(point1: Vector3, point2: Vector3): number{
+    let result = 0
+    result = Math.atan2(point2.x-point1.x, point2.z-point1.z)*180/Math.PI
+    return result
   }
 }

@@ -1,7 +1,40 @@
 import utils from "../node_modules/decentraland-ecs-utils/index";
 import { Switchboard } from "./switchboard"
+import { PhysicistNPC } from "./messenger"
 
-export class MovableEntity extends Entity {
+
+// sounds
+const buttonFiredSound = new Entity();
+buttonFiredSound.addComponent(
+  new AudioSource(
+    new AudioClip('sounds/cannon.mp3')
+  )
+);
+buttonFiredSound.addComponent(new Transform());
+buttonFiredSound.getComponent(Transform).position = Camera.instance.position;
+engine.addEntity(buttonFiredSound);
+
+const buttonMisfiredSound = new Entity();
+buttonMisfiredSound.addComponent(
+  new AudioSource(
+    new AudioClip('sounds/failed.mp3')
+  )
+);
+buttonMisfiredSound.addComponent(new Transform());
+buttonMisfiredSound.getComponent(Transform).position = Camera.instance.position;
+engine.addEntity(buttonMisfiredSound);
+
+const targetHitSound = new Entity();
+targetHitSound.addComponent(
+  new AudioSource(
+    new AudioClip('sounds/targethit.mp3')
+  )
+);
+targetHitSound.addComponent(new Transform());
+targetHitSound.getComponent(Transform).position = Camera.instance.position;
+engine.addEntity(targetHitSound);
+
+export class Ball extends Entity {
   constructor(
     model: GLTFShape,
     public sound: AudioClip,
@@ -10,15 +43,20 @@ export class MovableEntity extends Entity {
     public hasFinished: boolean = false,
     private isAnimating: boolean = false,
     private resetVelocity: Vector3,
-    private transform: Transform
+    private transform: Transform,
+    public targetPosition: Vector3,
+    public messenger: PhysicistNPC
   ) {
     super();
- 
+
     this.setParent(this.switchboard)
     this.transform = new Transform(this.switchboard.getComponent(Transform))
  
     this.addComponent(model);
     this.addComponent(new AudioSource(sound));
+
+    engine.addEntity(this);
+    engine.removeEntity(this);
   }
  
   public create(state) {
@@ -70,8 +108,11 @@ export class MovableEntity extends Entity {
  
   private handleFlight(velocity: Vector3, gravity: Vector3) {
     let pY: number;
+    let targetHit = false;
+    let soundPlayed = false;
+    let tarPosInScene = this.targetPosition.subtract(this.switchboard.getComponent(Transform).position)
     this.addComponent(
-      new utils.Interval(10, (): void => {
+      new utils.Interval(10, (): void => { 
         this.addComponent(
           new utils.MoveTransformComponent(
             this.transform.position,
@@ -79,11 +120,22 @@ export class MovableEntity extends Entity {
             0.01
           )
         )
+        if (!soundPlayed){
+          buttonFiredSound.getComponent(AudioSource).playOnce();
+          soundPlayed = true
+        }
+
         velocity = velocity.add(gravity)
  
         pY = this.getPY(pY);
         let psY = this.switchboard.getComponent(Transform).position.y;
  
+        if (!targetHit && this.distanceCheck(this.transform.position, tarPosInScene)){  // hit target check
+          log('hit da targetz')
+          this.messenger.onHit()
+          targetHit = true
+          targetHitSound.getComponent(AudioSource).playOnce();
+        }
         if (pY + psY + velocity.y < 0 && velocity.y < 0) {
           velocity = new Vector3(velocity.x*0.6, -velocity.y*0.5, velocity.z*0.6)
           if (Math.abs(velocity.y) < 0.05 && gravity.y != 0){
@@ -99,9 +151,21 @@ export class MovableEntity extends Entity {
           this.removeComponent(utils.MoveTransformComponent)
           this.hasFinished = true
           pY = 0;
+          if (!targetHit || this.messenger.numHits == this.messenger.maxHits){
+            this.messenger.dispMessage()
+          }
+          if (!targetHit){
+            buttonMisfiredSound.getComponent(AudioSource).playOnce();
+          }
           this.destroy();
         }
       })
     );
+  }
+
+  private distanceCheck(point1: Vector3, point2: Vector3): boolean{
+    let dist = Math.sqrt((point1.x-point2.x)**2+(point1.y-point2.y)**2+(point1.z-point2.z))
+
+    return dist < 3
   }
 };
