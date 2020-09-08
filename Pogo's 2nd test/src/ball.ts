@@ -75,17 +75,17 @@ export class Ball extends Entity {
       return;
     }
  
-    engine.addEntity(this);
- 
     this.isAnimating = true;
     this.sphericalVelocity = state;
     this.resetVelocity = this.sphericalVelocity;
-    this.transform.position = new Vector3(0,0,0);
+    this.transform.position = new Vector3(0, 0, 0);
     this.transform.scale = new Vector3(2, 2, 2);
     this.addComponentOrReplace(this.transform);
  
     let velocity = this.SphericalToCartesian(this.sphericalVelocity);
     let gravity = new Vector3(0, -0.05, 0);
+
+    engine.addEntity(this)
  
     this.handleFlight(velocity, gravity);
   };
@@ -120,6 +120,7 @@ export class Ball extends Entity {
     let pY: number;
     let targetHit = false;
     let soundPlayed = false;
+    let shown = false;
     let tarPosInScene = this.targetPosition.subtract(this.switchboard.getComponent(Transform).position)
     this.addComponent(
       new utils.Interval(10, (): void => { 
@@ -140,7 +141,7 @@ export class Ball extends Entity {
         pY = this.getPY(pY);
         let psY = this.switchboard.getComponent(Transform).position.y;
  
-        //log(this.transform.position.add(this.switchboard.getComponent(Transform).position))   // use this to find target positions quickly
+        log(this.transform.position.add(this.switchboard.getComponent(Transform).position))   // use this to find target positions quickly
         if (!targetHit && this.distanceCheck(this.transform.position, tarPosInScene)){  // hit target check
           this.messenger.onHit()
           targetHit = true

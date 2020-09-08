@@ -1,7 +1,7 @@
 
 export class Solution {
     public static solSwitchboard: Array<number> = [ 1, 0, 1, 1 ];
-    public static solLever: Array<number> = [ 0, 1, 1, 1 ];
+    public static solLever: Array<number> = [ 0, 1, 1, 0 ];
 
     // this doesn't work without dynamic targets, which are not yet implemented
     public static randomizeSolution(){

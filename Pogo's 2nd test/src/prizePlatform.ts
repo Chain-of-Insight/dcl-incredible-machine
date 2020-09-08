@@ -17,13 +17,13 @@ export class PrizePlatform {
         const staticPlatform = new Platform(
             model2,
             audio,
-            new Transform({ position: new Vector3(13,10,25), rotation: Quaternion.Euler(0, 90, 0) })
+            new Transform({ position: new Vector3(61,10,30), rotation: Quaternion.Euler(0, 90, 0) })
         )
 
         this.elevator = new Platform(
             model2,
             audio,
-            new Transform({ position: new Vector3(18,10,25) })
+            new Transform({ position: new Vector3(56,10,30) })
         )
     }
 
