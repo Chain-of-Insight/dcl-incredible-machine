@@ -6,7 +6,7 @@ const PHYSICIST_PORTRAIT = 'models/dialog/physicist.png';
 
 export class PhysicistNPC {
   public numHits = 0;
-  public maxHits = 3;
+  public maxHits = 4;
   public hitCounter
   public displayedFirst = false
   public displayedLast = false

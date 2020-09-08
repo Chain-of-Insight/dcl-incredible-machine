@@ -14,11 +14,16 @@ import { PhysicistNPC, IntroText, FirstHitText, FinalHitText } from './messenger
 // Display introduction message
 let messenger = new PhysicistNPC(IntroText, 0);
 
-Plants.buildPlants()
+// the 4 plant positions
+let pos1 = new Vector3(31,0,25)
+let pos2 = new Vector3(32,0,35)
+let pos3 = new Vector3(43,0,35)
+let pos4 = new Vector3(42,0,25)
+Plants.buildPlants(pos1, pos2, pos3, pos4)
 PrizePlatform.createPlatforms()
 
 
-let angles1: Array<Vector3> = [ new Vector3(1, 33, 45), new Vector3(1, 85, 45) ]
+let angles1: Array<Vector3> = [ new Vector3(1, 33, 45), new Vector3(1, 15, 45) ]
 const puzzlePiece1 = new PuzzlePiece(
   new Vector3(8, -0.13, 8),
   new Vector3(20, 5, 8),
@@ -55,6 +60,18 @@ const puzzlePiece3 = new PuzzlePiece(
   2
 )
 
+let angles4: Array<Vector3> = [ new Vector3(1, 165, 30), new Vector3(1, 150 , 20) ]
+const puzzlePiece4 = new PuzzlePiece(
+  new Vector3(60, 15, 10), 
+  new Vector3(58, 20, 10),
+  new Vector3(44, 0, 27),
+  new Vector3(27.66, 6.68, 18.12),
+  angles4,
+  new Quaternion(0, 0, 0, 1),
+  messenger,
+  3
+)
+
 
 // Buttons
 const button1 = new Button(
@@ -84,7 +101,9 @@ button1.addComponent(
       messenger.reset()
       if (puzzlePiece1.makeBall(0)){
         if (puzzlePiece2.makeBall(1)){
-          puzzlePiece3.makeBall(2)
+          if (puzzlePiece3.makeBall(2)){
+            puzzlePiece4.makeBall(3)
+          }
         }
       }
     },

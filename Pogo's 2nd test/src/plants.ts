@@ -8,25 +8,34 @@ const audioClip1 = new AudioClip("sounds/plantlow.mp3")
 const audioClip2 = new AudioClip("sounds/planthigh.mp3")
 
 export class Plants {
-    static buildPlants(){
-        let pos = new Vector3(32,0,1)
-        let offset = new Vector3(-1,0,0)
+    static buildPlants(
+        pos1: Vector3,
+        pos2: Vector3,
+        pos3: Vector3,
+        pos4: Vector3,
+    ){
         const plant1 = new Plant(
             this.randomModel(),
             this.sound(0),
-            new Transform({ position: pos, scale: this.shape(0) })
+            new Transform({ position: pos1, scale: this.shape(0) })
         )
         
         const plant2 = new Plant(
             this.randomModel(),
             this.sound(1),
-            new Transform({ position: pos.add(offset), scale: this.shape(1) })
+            new Transform({ position: pos2, scale: this.shape(1) })
         )
 
         const plant3 = new Plant(
             this.randomModel(),
             this.sound(2),
-            new Transform({ position: pos.add(offset).add(offset), scale: this.shape(2) })
+            new Transform({ position: pos3, scale: this.shape(2) })
+        )
+
+        const plant4 = new Plant(
+            this.randomModel(),
+            this.sound(3),
+            new Transform({ position: pos4, scale: this.shape(3) })
         )
     }
 
@@ -36,7 +45,7 @@ export class Plants {
         if (switchVal == 0){
             return new Vector3(1, 1, 1)
         } else {
-            return new Vector3(1.1, 1.1, 1.1)
+            return new Vector3(1.5, 1.5, 1.5)
         }
     }
 
