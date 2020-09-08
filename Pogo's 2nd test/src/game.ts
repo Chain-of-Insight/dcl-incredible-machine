@@ -80,7 +80,6 @@ const button1 = new Button(
   }
 );
 
-PrizePlatform.endGame()
 button1.addComponent(
   new OnPointerDown(
     (e) => {

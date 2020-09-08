@@ -3,7 +3,7 @@ import { Dialog, ImageData } from '../node_modules/@dcl/ui-utils/utils/types';
 import { PrizePlatform } from "./prizePlatform"
 
 const PHYSICIST_PORTRAIT = 'models/dialog/physicist.png';
-const ALCHEMIST_PORTRAIT = 'models/dialog/alchemist.png';
+const BOTH_NPCS_PORTRAIT = '';  // change here
 
 
 export class PhysicistNPC {
@@ -14,13 +14,12 @@ export class PhysicistNPC {
   public displayedLast = false;
   public icon: ui.SmallIcon;
   public dialog2;
-  public alchemist: ImageData;
   constructor(
     private dialog: ui.DialogWindow = null
   ) {
     this.dialog = new ui.DialogWindow(
       { 
-        path: ALCHEMIST_PORTRAIT
+        path: PHYSICIST_PORTRAIT
       }, 
       true // Dark theme
     );
@@ -70,12 +69,14 @@ export class PhysicistNPC {
   }
 
   public dispFinalMessage(){
-    this.alchemist = new ImageData()
-    this.alchemist.path = ALCHEMIST_PORTRAIT
+    let dialog2 = new ui.DialogWindow(
+      { 
+        path: BOTH_NPCS_PORTRAIT
+      }, 
+      true // Dark theme
+    );
 
-    this.dialog.openDialogWindow(this.FinalText, 0);
-    //this.dialog2.openDialogWindow(FinalText2, 0);
-    //this.dialog.openDialogWindow(FinalText3, 0);
+    dialog2.openDialogWindow(this.FinalText, 0);
   }
 
 

@@ -3,6 +3,7 @@ import * as ui from '../node_modules/@dcl/ui-utils/index';
 import { MoveTransformComponent } from "../node_modules/decentraland-ecs-utils/transform/component/move";
 import { Platform } from "./platform";
 import { PhysicistNPC } from "./messenger";
+import { message } from "../node_modules/@dcl/ui-utils/utils/default-ui-comopnents";
 
 const openChestSound = new Entity();
 openChestSound.addComponent(
@@ -102,6 +103,7 @@ export class PrizePlatform {
   }
 
   static endGame() {
+    let messageDisplayed = false;
     let arrow = new Entity();
     engine.addEntity(arrow)
     arrow.addComponent(new GLTFShape('models/arrow/arrow.glb'));
@@ -133,7 +135,10 @@ export class PrizePlatform {
                 engine.removeEntity(arrow)
             }
             catch {}
-            this.messenger.dispFinalMessage()
+            if (!messageDisplayed){
+                this.messenger.dispFinalMessage();
+                messageDisplayed = true;
+            }
             let state1 = this.elevator.getComponent(Transform).position
             let state2 = new Vector3(state1.x, this.platformPosition.y, state1.z)
             this.moveElevator(state1, state2, duration)
