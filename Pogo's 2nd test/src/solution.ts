@@ -15,8 +15,13 @@ export class Solution {
         this.solLever[3] = this.getRandomBinary()
     }
 
-    // returns 0 or 1
-    private static getRandomBinary(): number{
-        return Math.floor(Math.random() * Math.floor(2))
-    }
+  // returns 0 or 1
+  private static getRandomBinary(): number {
+    // return Math.floor(Math.random() * Math.floor(2))
+    let randomBoolean = Math.random() >= 0.5;
+    if (randomBoolean)
+      return 1;
+    else
+      return 0;
+  }
 }

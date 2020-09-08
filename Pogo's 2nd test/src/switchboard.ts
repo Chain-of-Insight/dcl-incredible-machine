@@ -61,6 +61,7 @@ export class Switchboard extends Entity {
     // Cannon
     this.cannon.setParent(this);
 
+    /*
     // fix target starting angle and draw it
     this.target.addComponentOrReplace(
       new Transform({
@@ -69,6 +70,7 @@ export class Switchboard extends Entity {
         })
       );
     engine.addEntity(this.target)
+    */
   }
 
   public toggle(){
@@ -111,6 +113,7 @@ export class Switchboard extends Entity {
       )
     )
 
+    /*
     this.target.addComponentOrReplace(
       new utils.RotateTransformComponent(
         this.target.getComponent(Transform).rotation,
@@ -118,7 +121,7 @@ export class Switchboard extends Entity {
         duration
       )
     )
-
+    */
   }
 
   private distanceTraveled(point1: Vector3, point2: Vector3): number {
