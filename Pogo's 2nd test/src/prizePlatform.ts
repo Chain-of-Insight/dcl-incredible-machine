@@ -20,6 +20,8 @@ export class PrizePlatform {
   public static treasureChest: Entity;
   public static treasureChestLid: Entity;
   public static messenger: PhysicistNPC;
+  public static platformPosition;
+  public static isMoving: boolean;
 
   static createPlatforms(NPC: PhysicistNPC) {
     const model = new GLTFShape('models/platform/platform_t.glb');
@@ -51,7 +53,7 @@ export class PrizePlatform {
     this.messenger = NPC;
 
     // Treasure chest
-    let platformPosition = staticPlatform.getComponent(Transform).position;
+    this.platformPosition = staticPlatform.getComponent(Transform).position;
     this.treasureChest = new Entity();
     this.treasureChestLid = new Entity();
     this.treasureChest.addComponent(chestBaseModel);
@@ -59,13 +61,13 @@ export class PrizePlatform {
 
     this.treasureChest.addComponent(
       new Transform({
-        position: new Vector3(platformPosition.x, platformPosition.y, platformPosition.z - 1.2),
+        position: new Vector3(this.platformPosition.x, this.platformPosition.y, this.platformPosition.z - 1.2),
         rotation: new Quaternion(0, -1, 0, 1)
       })
     );
     this.treasureChestLid.addComponent(
       new Transform({
-        position: new Vector3(platformPosition.x, platformPosition.y, platformPosition.z - 1.2),
+        position: new Vector3(this.platformPosition.x, this.platformPosition.y, this.platformPosition.z - 1.2),
         rotation: new Quaternion(0, -1, 0, 1)
       })
     );
@@ -74,7 +76,7 @@ export class PrizePlatform {
         (e) => {
           // Open treasure chest
           let openState = new Transform({
-            position: new Vector3(platformPosition.x, platformPosition.y + 0.4, platformPosition.z - 1.2),
+            position: new Vector3(this.platformPosition.x, this.platformPosition.y + 0.4, this.platformPosition.z - 1.2),
             rotation: new Quaternion(-0.3299883306026459, -0.6280034780502319, -0.32783016562461853, 0.6238964796066284),
           });
           this.treasureChestLid.addComponentOrReplace(openState);
@@ -99,32 +101,59 @@ export class PrizePlatform {
     engine.addEntity(this.treasureChestLid);
   }
 
-  static moveElevator() {
-    let state1 = this.elevator.getComponent(Transform).position
-    let state2 = new Vector3(state1.x, state1.y, state1.z)
-    if (state2.y != 0) {
-      state2.y = 0
-    } else {
-      state2.y = 10
-    }
-    let duration = (state1.y+state2.y)* 0.25;
+  static endGame() {
+    let arrow = new Entity();
+    engine.addEntity(arrow)
+    arrow.addComponent(new GLTFShape('models/arrow/arrow.glb'));
+    arrow.addComponent(
+    new Transform({
+        position: this.elevator.getComponent(Transform).position.add(new Vector3(0, 1, 0)),
+        rotation: Quaternion.Euler(0, 90, 0),
+        scale: new Vector3(3, 3, 3)
+      })
+    );
+
+    let duration = this.platformPosition.y * 0.25;
+
+    const trigger = new Entity();
+    trigger.setParent(this.elevator)
+    engine.addEntity(trigger);
+    trigger.addComponent(
+      new Transform({ position: new Vector3(0, 0, 0) })
+    );
+    trigger.addComponent(
+        new utils.TriggerComponent(
+          new utils.TriggerBoxShape(new Vector3(3, 5, 3), new Vector3(0, 0, 0)),
+          0,
+          0,
+          null,
+          null,
+          (): void => {
+            try{
+                engine.removeEntity(arrow)
+            }
+            catch {}
+            let state1 = this.elevator.getComponent(Transform).position
+            let state2 = new Vector3(state1.x, this.platformPosition.y, state1.z)
+            this.moveElevator(state1, state2, duration)
+          },
+          (): void => {
+            let state1 = this.elevator.getComponent(Transform).position
+            let state2 = new Vector3(state1.x, 0, state1.z)
+            this.moveElevator(state1, state2, duration)
+          }
+        )
+    )
+
+  }
+
+  private static moveElevator(state1, state2, duration){
     this.elevator.addComponentOrReplace(
-      new MoveTransformComponent(
-        state1,
-        state2,
-        duration,
-        () => { 
-          this.elevator.addComponent(
-            new utils.Interval(
-              2000,
-              () => { 
-                this.elevator.removeComponent(utils.Interval)
-                this.moveElevator() 
-              }
-            )
-          )
-        }
-      )
+        new MoveTransformComponent(
+          state1,
+          state2,
+          duration,
+        )
     )
   }
 }

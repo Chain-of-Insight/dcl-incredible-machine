@@ -91,9 +91,12 @@ const button1 = new Button(
 // buttonFiredSound.getComponent(Transform).position = Camera.instance.position;
 // engine.addEntity(buttonFiredSound);
 
+PrizePlatform.endGame()
+
 button1.addComponent(
   new OnPointerDown(
     (e) => {
+      /*
       messenger.reset()
       if (puzzlePiece1.makeBall(0)){
         if (puzzlePiece2.makeBall(1)){
@@ -102,6 +105,7 @@ button1.addComponent(
           }
         }
       }
+      */
     },
     { 
       button: ActionButton.POINTER,

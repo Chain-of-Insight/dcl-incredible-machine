@@ -61,11 +61,12 @@ export class PhysicistNPC {
         if (this.numHits == this.maxHits){
           this.dialog.openDialogWindow(FinalHitText, 0);
           this.displayedLast = true
-          PrizePlatform.moveElevator()
+          PrizePlatform.endGame()
         }
       }
     }
   }
+
 }
 
 // Physicist

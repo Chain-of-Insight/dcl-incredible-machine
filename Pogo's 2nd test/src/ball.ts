@@ -141,7 +141,7 @@ export class Ball extends Entity {
         pY = this.getPY(pY);
         let psY = this.switchboard.getComponent(Transform).position.y;
  
-        log(this.transform.position.add(this.switchboard.getComponent(Transform).position))   // use this to find target positions quickly
+        //log(this.transform.position.add(this.switchboard.getComponent(Transform).position))   // use this to find target positions quickly
         if (!targetHit && this.distanceCheck(this.transform.position, tarPosInScene)){  // hit target check
           this.messenger.onHit()
           targetHit = true
