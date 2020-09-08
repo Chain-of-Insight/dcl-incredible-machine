@@ -1,4 +1,3 @@
-import utils from "../node_modules/decentraland-ecs-utils/index";
 import { Switchboard } from "./switchboard"
 import { Cannon } from "./cannon"
 import { Lever } from "./lever"
@@ -108,7 +107,7 @@ export class PuzzlePiece {
   public makeBall(index: number): boolean{
     this.ball.create(this.angles[this.lever2.state()])
     if (this.switchboard.state() == Solution.solSwitchboard[index] && this.lever2.state() == Solution.solLever[index]){
-      log('good!')
+      // log('good!')
       this.ball.create(this.angles[this.lever2.state()])
       return true
     }
@@ -123,7 +122,12 @@ export class PuzzlePiece {
   }
 
   // returns 0 or 1
-  getRandomBinary(): number{
-    return Math.floor(Math.random() * Math.floor(2))
+  getRandomBinary(): number {
+    // return Math.floor(Math.random() * Math.floor(2))
+    let randomBoolean = Math.random() >= 0.5;
+    if (randomBoolean)
+      return 1;
+    else
+      return 0;
   }
 };
