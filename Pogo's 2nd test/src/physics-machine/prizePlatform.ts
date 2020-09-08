@@ -1,9 +1,8 @@
-import utils from "../node_modules/decentraland-ecs-utils/index";
-import * as ui from '../node_modules/@dcl/ui-utils/index';
-import { MoveTransformComponent } from "../node_modules/decentraland-ecs-utils/transform/component/move";
+import utils from "../../node_modules/decentraland-ecs-utils/index";
+import * as ui from '../../node_modules/@dcl/ui-utils/index';
+import { MoveTransformComponent } from "../../node_modules/decentraland-ecs-utils/transform/component/move";
 import { Platform } from "./platform";
 import { PhysicistNPC } from "./messenger";
-import { message } from "../node_modules/@dcl/ui-utils/utils/default-ui-comopnents";
 
 const openChestSound = new Entity();
 openChestSound.addComponent(
@@ -25,10 +24,10 @@ export class PrizePlatform {
   public static isMoving: boolean;
 
   static createPlatforms(NPC: PhysicistNPC) {
-    const model = new GLTFShape('models/platform/platform_t.glb');
-    const chestBaseModel = new GLTFShape('models/treasure/Chest_Base_Gold_01/Chest_Base_Gold_01.glb');
-    const chestLidModel = new GLTFShape('models/treasure/Chest_Top_Gold_01/Chest_Top_Gold_01.glb');
-    const audio = new AudioClip('sounds/platform-moving.mp3');
+    const model = new GLTFShape('models/physics-machine/platform/platform_t.glb');
+    const chestBaseModel = new GLTFShape('models/physics-machine/treasure/Chest_Base_Gold_01/Chest_Base_Gold_01.glb');
+    const chestLidModel = new GLTFShape('models/physics-machine/treasure/Chest_Top_Gold_01/Chest_Top_Gold_01.glb');
+    const audio = new AudioClip('sounds/physics-machine/platform-moving.mp3');
 
     // Main platform
     const staticPlatform = new Platform(
@@ -106,7 +105,7 @@ export class PrizePlatform {
     let messageDisplayed = false;
     let arrow = new Entity();
     engine.addEntity(arrow)
-    arrow.addComponent(new GLTFShape('models/arrow/arrow.glb'));
+    arrow.addComponent(new GLTFShape('models/physics-machine/arrow/arrow.glb'));
     arrow.addComponent(
     new Transform({
         position: this.elevator.getComponent(Transform).position.add(new Vector3(0, 1, 0)),

@@ -10,8 +10,8 @@ switchSound.getComponent(Transform).position = Camera.instance.position
 engine.addEntity(switchSound)
 
 // Highlight
-const LightModel = new GLTFShape('models/lever/button2.glb');
-const DefaultModel = new GLTFShape('models/lever/button1.glb');
+const LightModel = new GLTFShape('models/physics-machine/lever/button2.glb');
+const DefaultModel = new GLTFShape('models/physics-machine/lever/button1.glb');
 
 export class Lever extends Entity {
   public stateVar: boolean = false;

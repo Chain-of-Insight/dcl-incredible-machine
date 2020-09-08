@@ -2,10 +2,10 @@ import { Solution } from "./solution"
 import { Plant } from "./plant"
 
 
-const plantModel1 = new GLTFShape("models/plants/plant1.glb")
-const plantModel2 = new GLTFShape("models/plants/plant2.glb")
-const audioClip1 = new AudioClip("sounds/plantlow.mp3")
-const audioClip2 = new AudioClip("sounds/planthigh.mp3")
+const plantModel1 = new GLTFShape("models/physics-machine/plants/plant1.glb")
+const plantModel2 = new GLTFShape("models/physics-machine/plants/plant2.glb")
+const audioClip1 = new AudioClip("sounds/physics-machine/plantlow.mp3")
+const audioClip2 = new AudioClip("sounds/physics-machine/planthigh.mp3")
 
 export class Plants {
     static buildPlants(

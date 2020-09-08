@@ -4,7 +4,7 @@ import { Lever } from "./lever"
 import { Ball } from "./ball"
 import { PhysicistNPC } from "./messenger"
 import { Solution } from "./solution"
-import utils from "../node_modules/decentraland-ecs-utils/index"
+import utils from "../../node_modules/decentraland-ecs-utils/index"
 
 
 export class PuzzlePiece {
@@ -33,14 +33,14 @@ export class PuzzlePiece {
     }
     // Cannon 1
     this.cannon = new Cannon(
-        new GLTFShape('models/cannon/Cannon_01.glb'),
+        new GLTFShape('models/physics-machine/cannon/Cannon_01.glb'),
         new Transform({
             rotation: Quaternion.Euler(0, 90-angles[randLever].y, 0)
         })
     )
     // Target 1
     this.target = new Entity();
-    this.target.addComponent(new GLTFShape('models/target/target.glb'));
+    this.target.addComponent(new GLTFShape('models/physics-machine/target/target.glb'));
     this.target.addComponent(
     new Transform({
         position: targetPosition,
@@ -55,7 +55,7 @@ export class PuzzlePiece {
 
     // First switchboard
     this.switchboard = new Switchboard(
-        new GLTFShape('models/platform/platform.glb'),
+        new GLTFShape('models/physics-machine/platform/platform.glb'),
         switchPosition1,
         switchPosition2,
         this.cannon,
@@ -90,8 +90,8 @@ export class PuzzlePiece {
         })
     );
     this.ball = new Ball(
-        new GLTFShape("models/bowlingball2.glb"),
-        new AudioClip("sounds/coinPickup.mp3"),
+        new GLTFShape("models/physics-machine/bowlingball2.glb"),
+        new AudioClip("sounds/physics-machine/coinPickup.mp3"),
         angles[this.lever2.state()],  // r, theta, phi, phi controls height
         this.switchboard,
         false,

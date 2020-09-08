@@ -1,9 +1,9 @@
-import * as ui from '../node_modules/@dcl/ui-utils/index';
-import { Dialog, ImageData } from '../node_modules/@dcl/ui-utils/utils/types';
-import { PrizePlatform } from './prizePlatform';
+import * as ui from '../../node_modules/@dcl/ui-utils/index';
+import { Dialog, ImageData } from '../../node_modules/@dcl/ui-utils/utils/types';
+import { PrizePlatform } from "./prizePlatform"
 
-const PHYSICIST_PORTRAIT = 'models/dialog/physicist.png';
-const BOTH_NPCS_PORTRAIT = 'models/dialog/bothnpc.png';
+const PHYSICIST_PORTRAIT = 'models/physics-machine/dialog/physicist.png';
+const BOTH_NPCS_PORTRAIT = 'models/physics-machine/dialog/bothnpc.png';
 
 
 export class PhysicistNPC {
@@ -25,7 +25,7 @@ export class PhysicistNPC {
     );
 
     this.icon = new ui.SmallIcon(
-      'models/icons/target.png', 
+      'models/physics-machine/icons/target.png', 
       // x, y
       -80, 80, 
       // Width, height
